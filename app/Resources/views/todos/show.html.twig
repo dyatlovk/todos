@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Todo</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ todo.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ todo.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ todo.content }}</td>
+            </tr>
+            <tr>
+                <th>Datecreate</th>
+                <td>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datemodify</th>
+                <td>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Datesheduled</th>
+                <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Catid</th>
+                <td>{{ todo.catId }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ todo.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('todos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

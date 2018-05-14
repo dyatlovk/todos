@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Todo::{% block title %}{% endblock %}</title>
+	{% block stylesheets %}
+	{% endblock %}
+	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body id="{% block body_id %}{% endblock %}">
+<div class="wrap">
+	<h1>Профиль</h1>
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+		<a href="{{ path('fos_user_security_logout') }}">
+			{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+		</a>
+	{% endif %}
+	{% block fos_user_content %}{% endblock fos_user_content %}
+</div>
+</body>
+</html>

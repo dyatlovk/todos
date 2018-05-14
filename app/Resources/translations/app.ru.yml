@@ -1,0 +1,10 @@
+FOSUserBundle:
+  profile.show.username: Имя игрока
+  profile.show.email: Почта
+  profile.show.class: Класс
+  profile.show.strong: Сила
+  profile.show.intelligence: Интеллект
+  profile.show.lucky: Удача
+  profile.show.mentalStrength: Выносливость
+  profile.show.dexterity: Ловкость
+  profile.show.money: Деньги

@@ -1,0 +1,10 @@
+FOSUserBundle:
+  profile.show.username: Username
+  profile.show.email: E-mail
+  profile.show.class: Class
+  profile.show.strong: Strength
+  profile.show.intelligence: Intelligence
+  profile.show.lucky: Luck
+  profile.show.mentalStrength: Mental strength
+  profile.show.dexterity: Dexterity
+  profile.show.money: Mouney

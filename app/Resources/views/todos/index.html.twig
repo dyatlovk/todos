@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Todos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Datecreate</th>
+                <th>Datemodify</th>
+                <th>Datesheduled</th>
+                <th>Cat</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for todo in todos %}
+            <tr>
+                <td><a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ todo.id }}</a></td>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.content }}</td>
+                <td>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ todo.category.title }}</td>
+                <td>{{ todo.status }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('todos_new') }}">Create a new todo</a>
+        </li>
+    </ul>
+{% endblock %}
