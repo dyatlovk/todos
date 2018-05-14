@@ -27,9 +27,13 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('AppBundle:Category')->findAll();
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
 
-        return $this->render('category/index.html.twig', array(
+        $categories = $em->getRepository('AppBundle:Category')->findBy(['user' => $user->getId()]);
+
+        return $this->render('@App/category/index.html.twig', array(
             'categories' => $categories,
         ));
     }
@@ -42,19 +46,25 @@ class CategoryController extends Controller
      */
     public function newAction(Request $request)
     {
+
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
         $category = new Category();
         $form = $this->createForm('AppBundle\Form\CategoryType', $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $category->setUser($user->getId());
             $em->persist($category);
             $em->flush();
 
             return $this->redirectToRoute('category_show', array('id' => $category->getId()));
         }
 
-        return $this->render('category/new.html.twig', array(
+        return $this->render('@App/category/new.html.twig', array(
             'category' => $category,
             'form' => $form->createView(),
         ));
@@ -70,7 +80,7 @@ class CategoryController extends Controller
     {
         $deleteForm = $this->createDeleteForm($category);
 
-        return $this->render('category/show.html.twig', array(
+        return $this->render('@App/category/show.html.twig', array(
             'category' => $category,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -84,17 +94,23 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
+        // user
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
         $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('AppBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $category->setUser($user->getId());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
         }
 
-        return $this->render('category/edit.html.twig', array(
+        return $this->render('@App/category/edit.html.twig', array(
             'category' => $category,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

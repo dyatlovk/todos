@@ -44,6 +44,13 @@ class Category
     private $status;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="user", type="integer", length=3)
+     */
+    private $user;
+
+    /**
      * @ORM\OneToMany(targetEntity="Todos", mappedBy="category")
      */
     private $todos;
@@ -143,6 +150,27 @@ class Category
     public function getTodos()
     {
         return $this->todos;
+    }
+
+    /**
+     * Get user
+     * @return int
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     * @param int $id
+     * @return Category
+     */
+    public function setUser($id)
+    {
+        $this->user = $id;
+
+        return $this;
     }
 
     public function __toString() {

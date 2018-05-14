@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Todos;
+use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,9 +28,13 @@ class TodosController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $todos = $em->getRepository('AppBundle:Todos')->findAll();
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
 
-        return $this->render('todos/index.html.twig', array(
+        $todos = $em->getRepository('AppBundle:Todos')->findBy(['user' => $user->getId()]);
+
+        return $this->render('@App/todos/index.html.twig', array(
             'todos' => $todos
         ));
     }
@@ -42,11 +47,16 @@ class TodosController extends Controller
      */
     public function newAction(Request $request)
     {
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
         $todo = new Todos();
-        $form = $this->createForm('AppBundle\Form\TodosType', $todo);
+        $form = $this->createForm('AppBundle\Form\TodosType', ['todo'=>$todo, 'user'=>$user]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $todo->setUser($user->getId());
             $em = $this->getDoctrine()->getManager();
             $em->persist($todo);
             $em->flush();
@@ -54,7 +64,7 @@ class TodosController extends Controller
             return $this->redirectToRoute('todos_show', array('id' => $todo->getId()));
         }
 
-        return $this->render('todos/new.html.twig', array(
+        return $this->render('@App/todos/new.html.twig', array(
             'todo' => $todo,
             'form' => $form->createView(),
         ));
@@ -70,7 +80,7 @@ class TodosController extends Controller
     {
         $deleteForm = $this->createDeleteForm($todo);
 
-        return $this->render('todos/show.html.twig', array(
+        return $this->render('@App/todos/show.html.twig', array(
             'todo' => $todo,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -84,17 +94,23 @@ class TodosController extends Controller
      */
     public function editAction(Request $request, Todos $todo)
     {
+        // user
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
         $deleteForm = $this->createDeleteForm($todo);
-        $editForm = $this->createForm('AppBundle\Form\TodosType', $todo);
+        $editForm = $this->createForm('AppBundle\Form\TodosType', ['todo'=>$todo, 'user'=>$user]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $todo->setUser($user->getId());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('todos_edit', array('id' => $todo->getId()));
         }
 
-        return $this->render('todos/edit.html.twig', array(
+        return $this->render('@App/todos/edit.html.twig', array(
             'todo' => $todo,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

@@ -77,6 +77,13 @@ class Todos
      */
     private $category;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="user", type="integer", length=3)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -276,6 +283,27 @@ class Todos
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * Get user
+     * @return int
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set user
+     * @param int $id
+     * @return Todos
+     */
+    public function setUser($id)
+    {
+        $this->user = $id;
+
         return $this;
     }
 }
