@@ -13,12 +13,12 @@ class StartController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // Данные о текущем юзере
+        // get this user data
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
-        // Если юзер авторизован - рендерим страницу, иначе перекидыаем на страницу входа
+        // redirect to login if user not auth
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return $this->render('@App/start/index.html.twig');
         } else {

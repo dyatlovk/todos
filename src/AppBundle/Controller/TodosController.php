@@ -3,16 +3,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Todos;
-use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Todo controller.
  *
  * @Route("todos")
+ * @Security("has_role('ROLE_USER')")
  */
 class TodosController extends Controller
 {
