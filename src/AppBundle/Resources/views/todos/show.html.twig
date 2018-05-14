@@ -30,8 +30,8 @@
                 <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Catid</th>
-                <td>{{ todo.catId }}</td>
+                <th>Category</th>
+                <td>{{ todo.category.title }}</td>
             </tr>
             <tr>
                 <th>Status</th>

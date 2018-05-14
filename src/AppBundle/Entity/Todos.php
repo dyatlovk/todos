@@ -72,7 +72,7 @@ class Todos
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="todos")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="todos", cascade={"persist"})
      * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
     private $category;
@@ -305,6 +305,10 @@ class Todos
         $this->user = $id;
 
         return $this;
+    }
+
+    public function __toString() {
+        return (string) $this->getTitle();
     }
 }
 

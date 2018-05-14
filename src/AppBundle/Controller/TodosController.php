@@ -52,19 +52,21 @@ class TodosController extends Controller
         $user = $userManager->findUserByUsername($this->getUser());
 
         $todo = new Todos();
+        $cat = new Category();
         $form = $this->createForm('AppBundle\Form\TodosType', ['todo'=>$todo, 'user'=>$user]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $todo->setUser($user->getId());
             $em = $this->getDoctrine()->getManager();
             $em->persist($todo);
+            $em->persist($cat);
             $em->flush();
 
             return $this->redirectToRoute('todos_show', array('id' => $todo->getId()));
         }
 
         return $this->render('@App/todos/new.html.twig', array(
+            'allow_extra_fields' => true,
             'todo' => $todo,
             'form' => $form->createView(),
         ));

@@ -7,7 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TodosType extends AbstractType
 {
@@ -35,8 +38,9 @@ class TodosType extends AbstractType
             'data' => new \DateTime("now + 30minutes"),
         ])
         ->add('status')
-        ->add('category', EntityType::class, [
+        ->add('cat', EntityType::class, [
             'class' => 'AppBundle:Category',
+            'mapped' => false,
             'query_builder' => function (EntityRepository $er) use ($userId) {
                 return $er->createQueryBuilder('u')
                     ->where('u.user = :id')
