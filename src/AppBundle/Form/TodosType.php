@@ -6,46 +6,45 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TodosType extends AbstractType
 {
+
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $userId = $options['data']['user']->getId();
-
+        $user = $this->tokenStorage->getToken()->getUser();
         $builder
         ->add('title')
-        ->add('content')
-        ->add('dateCreate', DateTimeType::class, [
-            'widget' => 'choice',
-            'data' => new \DateTime("now"),
+        ->add('content', TextareaType::class)
+        ->add('dateCreate')
+        ->add('dateModify')
+        ->add('dateSheduled')
+        ->add('status', ChoiceType::class, [
+            'choices' => [0,1],
+            'expanded' => true
         ])
-        ->add('dateModify', DateTimeType::class, [
-            'widget' => 'choice',
-            'data' => new \DateTime("now"),
-        ])
-        ->add('dateSheduled', DateTimeType::class, [
-            'widget' => 'choice',
-            'data' => new \DateTime("now + 30minutes"),
-        ])
-        ->add('status')
-        ->add('cat', EntityType::class, [
+        ->add('category', EntityType::class, [
             'class' => 'AppBundle:Category',
-            'mapped' => false,
-            'query_builder' => function (EntityRepository $er) use ($userId) {
-                return $er->createQueryBuilder('u')
-                    ->where('u.user = :id')
-                    ->setParameter('id', $userId)
-                    ->orderBy('u.title', 'ASC');
+            'query_builder' => function (EntityRepository $er) use ($user) {
+                return $er
+                ->createQueryBuilder('u')
+                ->where('u.user = :id')
+                ->setParameter('id', $user->getId())
+                ->orderBy('u.title', 'ASC');
             },
         ]);
     }/**
@@ -53,10 +52,9 @@ class TodosType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => null,
-            'user'       => null
-        ]);
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\Todos'
+        ));
     }
 
     /**

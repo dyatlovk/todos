@@ -30,12 +30,16 @@
                 <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Category</th>
-                <td>{{ todo.category.title }}</td>
+                <th>Catid</th>
+                <td>{{ todo.catId }}</td>
             </tr>
             <tr>
                 <th>Status</th>
                 <td>{{ todo.status }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ todo.user }}</td>
             </tr>
         </tbody>
     </table>
@@ -46,11 +50,6 @@
         </li>
         <li>
             <a href="{{ path('todos_edit', { 'id': todo.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}
