@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Todos
@@ -26,6 +27,11 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 255,
+     * )
      */
     private $title;
 
@@ -33,6 +39,7 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $content;
 
@@ -61,6 +68,7 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="cat_id", type="integer")
+     * @Assert\NotNull()
      */
     private $catId;
 
@@ -68,6 +76,8 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="status", type="smallint")
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, max=1)
      */
     private $status;
 
@@ -81,6 +91,8 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="user", type="integer", length=3)
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1, max=100)
      */
     private $user;
 
