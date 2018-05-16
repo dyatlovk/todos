@@ -9,13 +9,23 @@ FOSUserBundle:
   profile.show.dexterity: Dexterity
   profile.show.money: Mouney
 
-id : №
+#index.html.twig
+todos list: Лист заданий
+
+id: №
 title: Заголовок
-content: Содердание
+content: Содержание
 datecreate: Дата создания
-datemodify: Дата редактарония
+datemodify: Дата редактирования
 datesheduled: Дата выполнения
 cat: Категория
 actions: Действия
 
 show: Показать
+edit: Изменить
+delete: Удалить
+
+create a new todo: Добавить новое задание
+
+#show.html.twig
+Todo: Задание
