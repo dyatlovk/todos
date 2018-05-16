@@ -9,4 +9,13 @@ FOSUserBundle:
   profile.show.dexterity: Dexterity
   profile.show.money: Mouney
 
+id: ID
 title: Title
+content: Content
+datecreate: Datecreate
+datemodify: Datemodify
+datesheduled: Datesheduled
+cat: Cat
+actions: Actions
+
+show: Show

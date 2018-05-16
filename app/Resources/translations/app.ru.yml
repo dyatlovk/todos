@@ -9,4 +9,13 @@ FOSUserBundle:
   profile.show.dexterity: Dexterity
   profile.show.money: Mouney
 
+id : №
 title: Заголовок
+content: Содердание
+datecreate: Дата создания
+datemodify: Дата редактарония
+datesheduled: Дата выполнения
+cat: Категория
+actions: Действия
+
+show: Показать

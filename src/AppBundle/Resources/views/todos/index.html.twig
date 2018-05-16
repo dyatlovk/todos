@@ -8,14 +8,14 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>{{ 'id' | trans }}</th>
                 <th>{{ 'title'| trans }}</th>
-                <th>Content</th>
-                <th>Datecreate</th>
-                <th>Datemodify</th>
-                <th>Datesheduled</th>
-                <th>Cat</th>
-                <th>Actions</th>
+                <th>{{ 'content' | trans }}</th>
+                <th>{{ 'datecreate' | trans }}</th>
+                <th>{{ 'datemodify' | trans }}</th>
+                <th>{{ 'datesheduled' | trans }}</th>
+                <th>{{ 'cat' | trans }}</th>
+                <th>{{ 'actions' | trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">show</a>
+                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>
                         </li>
                         <li>
                             <a href="{{ path('todos_edit', { 'id': todo.id }) }}">edit</a>
