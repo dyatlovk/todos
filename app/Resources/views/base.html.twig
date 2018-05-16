@@ -11,13 +11,39 @@
     </head>
     <body>
         <header>
-            Logged as: {{ app.user.username }}
-            <a href="{{ path('fos_user_security_logout') }}">
-                logout
-            </a>
+            <nav class="uk-navbar">
+                <a class="uk-navbar-brand" href="/">Todo Manager</a>
+                <ul class="uk-navbar-nav">
+                    <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                        <div class="uk-navbar-content">Todos</div>
+                        <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="{{ path('todos_index') }}">List</a></li>
+                                <li><a href="{{ path('todos_new') }}">Create</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                        <div class="uk-navbar-content">Categories</div>
+                        <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="{{ path('category_index') }}">List</a></li>
+                                <li><a href="{{ path('category_new') }}">Create</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div class="uk-navbar-content uk-navbar-flip">
+                    {{ app.user.username }}
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        logout
+                    </a>
+                </div>
+            </nav>
         </header>
         <content>
             {% block body %}{% endblock %}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.5/js/uikit.min.js"></script>
             <script src="{{ asset('build/app.js') }}"></script>
             {% block javascripts %}{% endblock %}

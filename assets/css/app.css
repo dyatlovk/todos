@@ -13,7 +13,3 @@ body {
 content {
     flex: 1;
 }
-
-a, a:visited {
-    color: blue;
-}
