@@ -3,19 +3,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Todos list</h1>
+    <h1>{{ 'todos list' | trans }}</h1>
 
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>{{ 'id' | trans }}</th>
                 <th>{{ 'title'| trans }}</th>
-                <th>Content</th>
-                <th>Datecreate</th>
-                <th>Datemodify</th>
-                <th>Datesheduled</th>
-                <th>Cat</th>
-                <th>Actions</th>
+                <th>{{ 'content' | trans }}</th>
+                <th>{{ 'datecreate' | trans }}</th>
+                <th>{{ 'datemodify' | trans }}</th>
+                <th>{{ 'datesheduled' | trans }}</th>
+                <th>{{ 'cat' | trans }}</th>
+                <th>{{ 'actions' | trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -31,13 +31,13 @@
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">show</a>
+                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">edit</a>
+                            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'edit' | trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('todos_delete', { 'id': todo.id }) }}">delete</a>
+                            <a href="{{ path('todos_delete', { 'id': todo.id }) }}">{{ 'delete' | trans }}</a>
                         </li>
                     </ul>
                 </td>
@@ -48,7 +48,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_new') }}">Create a new todo</a>
+            <a href="{{ path('todos_new') }}">{{ 'create a new todo' | trans }}</a>
         </li>
     </ul>
 {% endblock %}
