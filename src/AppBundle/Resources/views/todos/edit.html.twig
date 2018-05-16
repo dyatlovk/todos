@@ -1,7 +1,9 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Todo edit</h1>
+    <h1>{{ 'Todo edit' | trans }}</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -10,7 +12,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_index') }}">Back to the list</a>
+            <a href="{{ path('todos_index') }}">{{ 'Back to the list' | trans }}</a>
         </li>
     </ul>
 {% endblock %}
