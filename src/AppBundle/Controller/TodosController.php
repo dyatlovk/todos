@@ -29,7 +29,7 @@ class TodosController extends Controller
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
-        $todos = $em->getRepository('AppBundle:Todos')->findBy(['user' => $user->getId()]);
+        $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
 
         return $this->render('@App/todos/index.html.twig', array(
             'todos' => $todos,
@@ -54,7 +54,7 @@ class TodosController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $todo->setUser($user->getId());
+            $todo->setUserID($user->getId());
             $em->persist($todo);
             $em->flush();
 

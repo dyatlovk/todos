@@ -31,7 +31,7 @@ class CategoryController extends Controller
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
-        $categories = $em->getRepository('AppBundle:Category')->findBy(['user' => $user->getId()]);
+        $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()]);
 
         return $this->render('@App/category/index.html.twig', array(
             'categories' => $categories,
@@ -57,7 +57,7 @@ class CategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $category->setUser($user->getId());
+            $category->setUserID($user->getId());
             $em->persist($category);
             $em->flush();
 
@@ -104,7 +104,7 @@ class CategoryController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $category->setUser($user->getId());
+            $category->setUserID($user->getId());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('category_edit', array('id' => $category->getId()));

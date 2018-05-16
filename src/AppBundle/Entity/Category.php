@@ -46,9 +46,9 @@ class Category
     /**
      * @var int
      *
-     * @ORM\Column(name="user", type="integer", length=3)
+     * @ORM\Column(name="user_id", type="integer", length=3)
      */
-    private $user;
+    private $userID;
 
     /**
      * @ORM\OneToMany(targetEntity="Todos", mappedBy="category")
@@ -156,9 +156,9 @@ class Category
      * Get user
      * @return int
      */
-    public function getUser()
+    public function getUserID()
     {
-        return $this->user;
+        return $this->userID;
     }
 
     /**
@@ -166,9 +166,9 @@ class Category
      * @param int $id
      * @return Category
      */
-    public function setUser($id)
+    public function setUserID($id)
     {
-        $this->user = $id;
+        $this->userID = $id;
 
         return $this;
     }

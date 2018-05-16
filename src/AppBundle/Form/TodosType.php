@@ -42,7 +42,7 @@ class TodosType extends AbstractType
             'query_builder' => function (EntityRepository $er) use ($user) {
                 return $er
                 ->createQueryBuilder('u')
-                ->where('u.user = :id')
+                ->where('u.userID = :id')
                 ->setParameter('id', $user->getId())
                 ->orderBy('u.title', 'ASC');
             },

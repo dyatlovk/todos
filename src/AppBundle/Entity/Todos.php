@@ -68,7 +68,6 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="cat_id", type="integer")
-     * @Assert\NotNull()
      */
     private $catId;
 
@@ -90,11 +89,9 @@ class Todos
     /**
      * @var int
      *
-     * @ORM\Column(name="user", type="integer", length=3)
-     * @Assert\NotBlank()
-     * @Assert\Range(min=1, max=100)
+     * @ORM\Column(name="user_id", type="integer", length=3)
      */
-    private $user;
+    private $userID;
 
     public function __construct()
     {
@@ -302,9 +299,9 @@ class Todos
      * Get user
      * @return int
      */
-    public function getUser()
+    public function getUserID()
     {
-        return $this->user;
+        return $this->userID;
     }
 
     /**
@@ -312,9 +309,9 @@ class Todos
      * @param int $id
      * @return Todos
      */
-    public function setUser($id)
+    public function setUserID($id)
     {
-        $this->user = $id;
+        $this->userID = $id;
 
         return $this;
     }
