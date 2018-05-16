@@ -1,0 +1,28 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Todo manager on Symfony 3",
+  "main": "webpack.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "webpack-notifier": "^1.6.0"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.20.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dyatlovk/todos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dyatlovk/todos/issues"
+  },
+  "homepage": "https://github.com/dyatlovk/todos#readme"
+}
