@@ -1,3 +1,5 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -6,7 +8,7 @@
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'Id' | trans }}</th>
                 <td>{{ todo.id }}</td>
             </tr>
             <tr>

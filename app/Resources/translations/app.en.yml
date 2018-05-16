@@ -9,6 +9,7 @@ FOSUserBundle:
   profile.show.dexterity: Dexterity
   profile.show.money: Mouney
 
+#index.html.twig
 todos list: To do list
 
 id: ID
@@ -25,3 +26,7 @@ edit: Edit
 delete: Delete
 
 create a new todo: Create a new to do
+
+#show.html.twig
+Todo: To do
+Id: ID
