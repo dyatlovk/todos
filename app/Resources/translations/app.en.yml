@@ -8,3 +8,5 @@ FOSUserBundle:
   profile.show.mentalStrength: Mental strength
   profile.show.dexterity: Dexterity
   profile.show.money: Mouney
+
+title: Title

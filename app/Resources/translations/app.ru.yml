@@ -1,10 +1,12 @@
 FOSUserBundle:
-  profile.show.username: Имя игрока
-  profile.show.email: Почта
-  profile.show.class: Класс
-  profile.show.strong: Сила
-  profile.show.intelligence: Интеллект
-  profile.show.lucky: Удача
-  profile.show.mentalStrength: Выносливость
-  profile.show.dexterity: Ловкость
-  profile.show.money: Деньги
+  profile.show.username: Username
+  profile.show.email: E-mail
+  profile.show.class: Class
+  profile.show.strong: Strength
+  profile.show.intelligence: Intelligence
+  profile.show.lucky: Luck
+  profile.show.mentalStrength: Mental strength
+  profile.show.dexterity: Dexterity
+  profile.show.money: Mouney
+
+title: Заголовок

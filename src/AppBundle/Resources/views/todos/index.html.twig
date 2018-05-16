@@ -1,3 +1,5 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -7,7 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Title</th>
+                <th>{{ 'title'| trans }}</th>
                 <th>Content</th>
                 <th>Datecreate</th>
                 <th>Datemodify</th>
