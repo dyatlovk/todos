@@ -7,7 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Category controller.
@@ -157,9 +164,23 @@ class CategoryController extends Controller
             'id' => $catId
         ]);
 
-        return $this->render('@App/category/todos.html.twig',[
-            'cats' => $cats
-        ]);
+        if($request->isXmlHttpRequest()) {
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(2);
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $encoders = array(new XmlEncoder(), new JsonEncoder());
+            $normalizers = array($normalizer);
+            $serializer = new Serializer($normalizers, $encoders);
+            $jsonContent = $serializer->serialize($cats[0]->getTodos(), 'json');
+
+            return new Response($jsonContent);
+        } else {
+            return $this->render('@App/category/todos.html.twig',[
+                'cats' => $cats
+            ]);
+        }
     }
 
     /**
