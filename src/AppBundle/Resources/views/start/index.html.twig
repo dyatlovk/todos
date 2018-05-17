@@ -1,9 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    body
+    <div class="left">
+        <ul class="uk-list uk-list-line">
+            {% for category in cats %}
+                <li><a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="content">
+        <ul class="uk-list">
+            {% for todo in todos %}
+                <li>
+                    <h2>{{ todo.title }}</h2>
+                    <p>{{ todo.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
-
+    <link rel="stylesheet" href="{{ asset('build/start.css') }}">
 {% endblock %}

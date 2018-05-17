@@ -20,7 +20,13 @@ class StartController extends Controller
 
         // redirect to login if user not auth
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->render('@App/start/index.html.twig');
+            $em = $this->getDoctrine()->getManager();
+            $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()]);
+            $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
+            return $this->render('@App/start/index.html.twig', [
+                'cats' => $categories,
+                'todos' => $todos
+            ]);
         } else {
             return $this->forward('FOSUserBundle:Security:login');
         }

@@ -1,0 +1,7 @@
+content {
+    display: flex;
+}
+
+.left {
+    min-width: 300px;
+}

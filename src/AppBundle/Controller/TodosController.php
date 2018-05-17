@@ -55,6 +55,7 @@ class TodosController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $todo->setUserID($user->getId());
+            // $todo->setCatId( $form->getData()->getCategory()->getId() );
             $em->persist($todo);
             $em->flush();
 

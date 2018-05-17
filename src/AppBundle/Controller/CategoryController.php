@@ -138,6 +138,31 @@ class CategoryController extends Controller
     }
 
     /**
+     * Get todos by cat
+     *
+     * @Route("/{id}/todos", name="category_show_todos")
+     */
+    public function todosAction(Request $request)
+    {
+        $catId = $request->get('id');
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $cats = $em
+        ->getRepository('AppBundle:Category')
+        ->findBy([
+            'userID' => $user->getId(),
+            'id' => $catId
+        ]);
+
+        return $this->render('@App/category/todos.html.twig',[
+            'cats' => $cats
+        ]);
+    }
+
+    /**
      * Creates a form to delete a category entity.
      *
      * @param Category $category The category entity

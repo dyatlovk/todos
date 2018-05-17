@@ -27,11 +27,6 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *     min = 3,
-     *     max = 255,
-     * )
      */
     private $title;
 
@@ -39,7 +34,6 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $content;
 
@@ -75,8 +69,6 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="status", type="smallint")
-     * @Assert\NotBlank()
-     * @Assert\Range(min=0, max=1)
      */
     private $status;
 
@@ -309,9 +301,9 @@ class Todos
      * @param int $id
      * @return Todos
      */
-    public function setUserID($id)
+    public function setUserID($userID)
     {
-        $this->userID = $id;
+        $this->userID = $userID;
 
         return $this;
     }
