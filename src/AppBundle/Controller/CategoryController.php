@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -170,8 +169,8 @@ class CategoryController extends Controller
             $normalizer->setCircularReferenceHandler(function ($object) {
                 return $object->getId();
             });
-            $encoders = array(new XmlEncoder(), new JsonEncoder());
-            $normalizers = array($normalizer);
+            $encoders = [ new JsonEncoder() ];
+            $normalizers = [ $normalizer ];
             $serializer = new Serializer($normalizers, $encoders);
             $jsonContent = $serializer->serialize($cats[0]->getTodos(), 'json');
 

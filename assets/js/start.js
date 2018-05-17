@@ -42,7 +42,9 @@ require('../css/start.css');
     let todosList = document.querySelector('#js-todos-list');
     todosList.innerHTML = "";
     for(let i=0;i<data.length;i++) {
-      let li = document.createElement("li");
+      let li = document.createElement("div");
+      li.classList.add('uk-block');
+      li.classList.add('uk-block-default');
       li.innerHTML = "<h2>"+data[i].title+"</h2><p>"+data[i].content+"</p>";
       todosList.appendChild(li);
     }

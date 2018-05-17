@@ -2,6 +2,7 @@ body, html {
     padding: 0;
     margin: 0;
     font: 400 1rem/1.5em -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    min-height: 100%;
     height: 100%;
 }
 

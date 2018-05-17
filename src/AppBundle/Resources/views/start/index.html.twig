@@ -3,20 +3,24 @@
 {% block body %}
     <div class="left">
         <ul id="js-cat-menu" class="uk-list uk-list-line">
-            {% for category in cats %}
-                <li><a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a></li>
+            {% for category in cats.data %}
+                <li>
+                    <a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a>
+                    <div class="uk-text-right">{{cats.count[loop.index0]}}</div>
+                </li>
             {% endfor %}
+            <li><a class="uk-text-success" href="{{path('todos_index')}}">Show all</a></li>
         </ul>
     </div>
     <div class="content">
-        <ul id="js-todos-list" class="uk-list">
+        <div id="js-todos-list">
             {% for todo in todos %}
-                <li>
+                <div class="uk-block uk-block-default">
                     <h2>{{ todo.title }}</h2>
                     <p>{{ todo.content }}</p>
-                </li>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 {% endblock %}
 
