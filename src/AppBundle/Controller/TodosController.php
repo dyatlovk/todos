@@ -149,6 +149,26 @@ class TodosController extends Controller
     }
 
     /**
+     * Close todo
+     *
+     * @Route("/{id}/close", name="todos_close")
+     * @param  Request $request [description]
+     * @param  Todos   $todo    [description]
+     */
+    public function closeAction(Request $request, Todos $todo)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $history = $request->getRequestUri();
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+        $todo->setStatus(0);
+        $em->persist($todo);
+        $em->flush();
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * Creates a form to delete a todo entity.
      *
      * @param Todos $todo The todo entity

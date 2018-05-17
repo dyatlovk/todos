@@ -22,12 +22,16 @@ class StartController extends Controller
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $em = $this->getDoctrine()->getManager();
             $cats = [];
-            $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()]);
+            $categories = $em
+            ->getRepository('AppBundle:Category')
+            ->findBy(['userID' => $user->getId(), 'status' => 1]);
             foreach ($categories as $key => $value) {
                 $cats['data'][] = $value;
                 $cats['count'][] = count($value->getTodos());
             }
-            $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
+            $todos = $em
+            ->getRepository('AppBundle:Todos')
+            ->findBy(['userID' => $user->getId(), 'status' => 1]);
             return $this->render('@App/start/index.html.twig', [
                 'cats' => $cats,
                 'todos' => $todos

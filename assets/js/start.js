@@ -45,7 +45,11 @@ require('../css/start.css');
       let li = document.createElement("div");
       li.classList.add('uk-block');
       li.classList.add('uk-block-default');
-      li.innerHTML = "<h2>"+data[i].title+"</h2><p>"+data[i].content+"</p>";
+      li.innerHTML = "<h2>" +
+      data[i].title + "</h2>"+
+      "<p>"+data[i].content+"</p>" +
+      new Date(data[i].dateSheduled.timestamp*1000) +
+      "<div class='uk-button-group'> <a class='uk-button uk-button-small uk-button-danger' href=''>delete</a> <a class='uk-button uk-button-small uk-button-primary' href=''>close</a> </div>";
       todosList.appendChild(li);
     }
   }
