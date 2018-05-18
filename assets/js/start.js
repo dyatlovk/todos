@@ -86,12 +86,25 @@ require('../css/start.css');
 
   TodoEdit.prototype.edit = function(e) {
     let url = e.target.getAttribute("href");
+    let modal = document.querySelector('#js-edit-modal');
+    let m = UIkit.modal("#js-edit-modal");
     this.ajax({
       url:url,
       success: function(data) {
-        console.log(data);
+        modal.getElementsByClassName('uk-modal-content')[0].innerHTML = data;
+        modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
       }
-    })
+    });
+    m.on(
+      {
+        'show.uk.modal': function(){
+        },
+
+        'hide.uk.modal': function(){
+          modal.getElementsByClassName('uk-modal-content')[0].innerHTML = '';
+          modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'block';
+        }
+    });
   }
 
   TodoEdit.prototype.close = function() {
@@ -105,15 +118,17 @@ require('../css/start.css');
   TodoEdit.prototype.ajax = function(opt) {
     let $this = this;
     let def = {
-      success: function(){},
-      error: function() {},
-      type: "POST"
+      onSend  : function() {},
+      success : function(){},
+      error   : function() {},
+      type    : "POST"
     }
     let cfg = Object.assign(def, opt);
     var xhr = new XMLHttpRequest();
     xhr.open(cfg.type, opt.url, true);
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.send();
+    cfg.onSend();
     xhr.onload = function (e) {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {

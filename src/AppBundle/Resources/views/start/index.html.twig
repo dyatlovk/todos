@@ -20,12 +20,20 @@
                     <p>{{ todo.content }}</p>
                     {{ todo.dateSheduled.date|date("Y/m/d h:m") }}
                     <div class="uk-button-group">
-                        <a class="uk-button uk-button-small uk-button-primary todo_edit" href="{{path('todos_edit',{'id':todo.id})}}">Edit</a>
+                        <a class="uk-button uk-button-small uk-button-primary todo_edit" data-uk-modal="{target:'#js-edit-modal', center:true}" href="{{path('todos_edit',{'id':todo.id})}}">Edit</a>
                         <a class="uk-button uk-button-small todo_close" href="{{path('todos_close',{'id':todo.id})}}">close</a>
                         <a class="uk-button uk-button-small uk-button-danger todo_delete" href="{{path('todos_delete',{'id':todo.id}) }}">delete</a>
                     </div>
                 </div>
             {% endfor %}
+        </div>
+    </div>
+
+    <div id="js-edit-modal" class="uk-modal">
+        <div class="uk-modal-dialog">
+            <a class="uk-modal-close uk-close"></a>
+            <div class="uk-modal-spinner"></div>
+            <div class="uk-modal-content"></div>
         </div>
     </div>
 {% endblock %}
