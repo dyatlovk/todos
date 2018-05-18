@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Categories list</h1>
 
-    <table>
+    <table class="uk-table uk-table-striped uk-table-condensed">
         <thead>
             <tr>
                 <th>Id</th>
@@ -17,7 +17,7 @@
         {% for category in categories %}
             <tr>
                 <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
-                <td>{{ category.title }}</td>
+                <td><a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a></td>
                 <td>{{ category.description }}</td>
                 <td>{{ category.status }}</td>
                 <td>

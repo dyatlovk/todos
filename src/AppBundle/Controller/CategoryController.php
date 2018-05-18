@@ -7,7 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Category controller.
@@ -135,6 +141,45 @@ class CategoryController extends Controller
         }
 
         return $this->redirectToRoute('category_index');
+    }
+
+    /**
+     * Get todos by cat
+     *
+     * @Route("/{id}/todos", name="category_show_todos")
+     */
+    public function todosAction(Request $request)
+    {
+        $catId = $request->get('id');
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $cats = $em
+        ->getRepository('AppBundle:Category')
+        ->findBy([
+            'userID' => $user->getId(),
+            'id' => $catId
+        ]);
+
+        if($request->isXmlHttpRequest()) {
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(2);
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $encoders = [ new JsonEncoder() ];
+            $normalizers = [ $normalizer ];
+            $serializer = new Serializer($normalizers, $encoders);
+            $jsonContent = $serializer->serialize($cats[0]->getTodos(), 'json');
+
+            return new Response($jsonContent);
+        } else {
+            return $this->render('@App/category/todos.html.twig',[
+                'cats' => $cats
+            ]);
+        }
     }
 
     /**

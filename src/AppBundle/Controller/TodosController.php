@@ -7,6 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Todo controller.
@@ -19,9 +25,9 @@ class TodosController extends Controller
      * Lists all todo entities.
      *
      * @Route("/", name="todos_index")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -31,9 +37,23 @@ class TodosController extends Controller
 
         $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
 
-        return $this->render('@App/todos/index.html.twig', array(
-            'todos' => $todos,
-        ));
+        if($request->isXmlHttpRequest()) {
+            $normalizer = new ObjectNormalizer();
+            $normalizer->setCircularReferenceLimit(2);
+            $normalizer->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            });
+            $encoders = [ new JsonEncoder() ];
+            $normalizers = [ $normalizer ];
+            $serializer = new Serializer($normalizers, $encoders);
+            $jsonContent = $serializer->serialize($todos, 'json');
+
+            return new Response($jsonContent);
+        } else {
+            return $this->render('@App/todos/index.html.twig', array(
+                'todos' => $todos,
+            ));
+        }
     }
 
     /**
@@ -55,6 +75,7 @@ class TodosController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $todo->setUserID($user->getId());
+            // $todo->setCatId( $form->getData()->getCategory()->getId() );
             $em->persist($todo);
             $em->flush();
 
@@ -125,6 +146,26 @@ class TodosController extends Controller
         // }
 
         return $this->redirectToRoute('todos_index');
+    }
+
+    /**
+     * Close todo
+     *
+     * @Route("/{id}/close", name="todos_close")
+     * @param  Request $request [description]
+     * @param  Todos   $todo    [description]
+     */
+    public function closeAction(Request $request, Todos $todo)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $history = $request->getRequestUri();
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+        $todo->setStatus(0);
+        $em->persist($todo);
+        $em->flush();
+        return $this->redirectToRoute('homepage');
     }
 
     /**

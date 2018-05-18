@@ -5,7 +5,7 @@
 {% block body %}
     <h1>{{ 'todos list' | trans }}</h1>
 
-    <table>
+    <table class="uk-table uk-table-striped uk-table-condensed">
         <thead>
             <tr>
                 <th>{{ 'id' | trans }}</th>
@@ -29,17 +29,11 @@
                 <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ todo.category.title }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'edit' | trans }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('todos_delete', { 'id': todo.id }) }}">{{ 'delete' | trans }}</a>
-                        </li>
-                    </ul>
+                    <div class="uk-button-group">
+                        <a class="uk-button uk-button-small" href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>
+                        <a class="uk-button uk-button-small" href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'edit' | trans }}</a>
+                        <a class="uk-button uk-button-small" href="{{ path('todos_delete', { 'id': todo.id }) }}">{{ 'delete' | trans }}</a>
+                    </div>
                 </td>
             </tr>
         {% endfor %}

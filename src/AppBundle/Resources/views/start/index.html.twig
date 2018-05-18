@@ -1,9 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    body
+    <div class="left">
+        <ul id="js-cat-menu" class="uk-list uk-list-line">
+            {% for category in cats.data %}
+                <li>
+                    <a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a>
+                    <div class="uk-text-right">{{cats.count[loop.index0]}}</div>
+                </li>
+            {% endfor %}
+            <li><a class="uk-text-success" href="{{path('todos_index')}}">Show all</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div id="js-todos-list">
+            {% for todo in todos %}
+                <div class="uk-block uk-block-default">
+                    <h2>{{ todo.title }}</h2>
+                    <p>{{ todo.content }}</p>
+                    {{ todo.dateSheduled.date|date("Y/m/d h:m") }}
+                    <div class="uk-button-group">
+                        <a class="uk-button uk-button-small uk-button-primary" href="{{path('todos_edit',{'id':todo.id})}}">Edit</a>
+                        <a class="uk-button uk-button-small" href="{{path('todos_close',{'id':todo.id})}}">close</a>
+                        <a class="uk-button uk-button-small uk-button-danger" href="{{path('todos_delete',{'id':todo.id}) }}">delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/start.css') }}">
+{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('build/start.js') }}"></script>
 {% endblock %}

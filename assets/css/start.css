@@ -1,0 +1,27 @@
+content {
+    display: flex;
+}
+
+.left {
+    min-width: 300px;
+    background-color: #eee;
+}
+
+.left li {
+    display:  flex;
+    justify-content: space-between;
+    padding: 0 1em;
+}
+
+.left li:before,
+.left li:after {
+    display:none;
+}
+
+.uk-block {
+    padding: 1em;
+}
+
+header .uk-navbar {
+    border-bottom: 1px solid #cdcdcd;
+}
