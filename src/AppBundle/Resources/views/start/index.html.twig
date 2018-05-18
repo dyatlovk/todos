@@ -20,9 +20,9 @@
                     <p>{{ todo.content }}</p>
                     {{ todo.dateSheduled.date|date("Y/m/d h:m") }}
                     <div class="uk-button-group">
-                        <a class="uk-button uk-button-small uk-button-primary" href="{{path('todos_edit',{'id':todo.id})}}">Edit</a>
-                        <a class="uk-button uk-button-small" href="{{path('todos_close',{'id':todo.id})}}">close</a>
-                        <a class="uk-button uk-button-small uk-button-danger" href="{{path('todos_delete',{'id':todo.id}) }}">delete</a>
+                        <a class="uk-button uk-button-small uk-button-primary todo_edit" href="{{path('todos_edit',{'id':todo.id})}}">Edit</a>
+                        <a class="uk-button uk-button-small todo_close" href="{{path('todos_close',{'id':todo.id})}}">close</a>
+                        <a class="uk-button uk-button-small uk-button-danger todo_delete" href="{{path('todos_delete',{'id':todo.id}) }}">delete</a>
                     </div>
                 </div>
             {% endfor %}
