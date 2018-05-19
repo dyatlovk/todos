@@ -52,7 +52,6 @@ class CategoryController extends Controller
      */
     public function newAction(Request $request)
     {
-
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
@@ -84,6 +83,8 @@ class CategoryController extends Controller
      */
     public function showAction(Category $category)
     {
+        $this->checkAccess($category);
+
         $deleteForm = $this->createDeleteForm($category);
 
         return $this->render('@App/category/show.html.twig', array(
@@ -100,6 +101,8 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
+        $this->checkAccess($category);
+
         // user
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
@@ -131,6 +134,8 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, Category $category)
     {
+        $this->checkAccess($category);
+
         $form = $this->createDeleteForm($category);
         $form->handleRequest($request);
 
@@ -148,8 +153,10 @@ class CategoryController extends Controller
      *
      * @Route("/{id}/todos", name="category_show_todos")
      */
-    public function todosAction(Request $request)
+    public function todosAction(Request $request, Category $category)
     {
+        $this->checkAccess($category);
+
         $catId = $request->get('id');
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
@@ -194,7 +201,22 @@ class CategoryController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('category_delete', array('id' => $category->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
+    }
+
+    protected function checkAccess(Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        // get user
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
+        // check user access
+        $userCats = $em->getRepository("AppBundle:Category")->getUserCatsId($user->getId());
+        $userAccess = in_array($category->getId(), $userCats);
+        if(!$userAccess) throw $this->createNotFoundException('access denied');
+        return true;
     }
 }

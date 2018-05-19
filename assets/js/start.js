@@ -5,8 +5,13 @@ require('../css/start.css');
   document.addEventListener("DOMContentLoaded", DOMReady);
 
   function DOMReady() {
-    let leftMenu = document.querySelector('#js-cat-menu');
-    leftMenu.addEventListener('click', onLeftMenuClick);
+    $todoNS = window['$todo'] || (window['$todo'] = {});
+    $todoNS['selectors'] = {};
+    $todoNS['selectors']['leftmenu'] = document.querySelector('#js-cat-menu');
+    $todoNS['selectors']['todolist'] = document.querySelector('#js-todos-list');
+
+    $todoNS.selectors.leftmenu.addEventListener('click', onLeftMenuClick);
+    new $todoNS.TodoEdit();
   }
 
   function onLeftMenuClick(e) {
@@ -39,7 +44,7 @@ require('../css/start.css');
 
   function todosParse(data)
   {
-    let todosList = document.querySelector('#js-todos-list');
+    let todosList = $todoNS.selectors.todolist;
     todosList.innerHTML = "";
     for(let i=0;i<data.length;i++) {
       let li = document.createElement("div");
@@ -54,4 +59,94 @@ require('../css/start.css');
     }
   }
 
+}());
+
+/**
+ * Todo item action
+ */
+(function (){
+  $todoNS = window['$todo'] || (window['$todo'] = {});
+
+  let TodoEdit = function(params) {
+    let $this = this;
+    let defaults = {
+      btnGroup: '.uk-button-group'
+    };
+    $this.cfg = Object.assign(defaults, params);
+    $this.init();
+  }
+
+  TodoEdit.prototype.init = function() {
+    let $this = this;
+    let todoList = $todo.selectors.todolist;
+    todoList.addEventListener('click', function(e){
+      _eventProcess(e,$this)
+    });
+  }
+
+  TodoEdit.prototype.edit = function(e) {
+    let url = e.target.getAttribute("href");
+    let modal = document.querySelector('#js-edit-modal');
+    let m = UIkit.modal("#js-edit-modal");
+    this.ajax({
+      url:url,
+      success: function(data) {
+        modal.getElementsByClassName('uk-modal-content')[0].innerHTML = data;
+        modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
+      }
+    });
+    m.on(
+      {
+        'show.uk.modal': function(){
+        },
+
+        'hide.uk.modal': function(){
+          modal.getElementsByClassName('uk-modal-content')[0].innerHTML = '';
+          modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'block';
+        }
+    });
+  }
+
+  TodoEdit.prototype.close = function() {
+    console.log("close");
+  }
+
+  TodoEdit.prototype.delete = function() {
+    console.log("delete");
+  }
+
+  TodoEdit.prototype.ajax = function(opt) {
+    let $this = this;
+    let def = {
+      onSend  : function() {},
+      success : function(){},
+      error   : function() {},
+      type    : "POST"
+    }
+    let cfg = Object.assign(def, opt);
+    var xhr = new XMLHttpRequest();
+    xhr.open(cfg.type, opt.url, true);
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhr.send();
+    cfg.onSend();
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          cfg.success(xhr.responseText);
+        } else {
+          cfg.error(xhr.status + ': ' + xhr.statusText);
+        }
+      }
+    };
+  }
+
+  function _eventProcess(e, context) {
+    e.preventDefault();
+    if(e.target.classList.contains('todo_edit')) context.edit(e);
+    if(e.target.classList.contains('todo_close')) context.close(e);
+    if(e.target.classList.contains('todo_delete')) context.delete(e);
+    return false;
+  }
+
+  $todoNS.TodoEdit = TodoEdit;
 }());

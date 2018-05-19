@@ -96,6 +96,10 @@ class TodosController extends Controller
      */
     public function showAction(Todos $todo)
     {
+        $this->checkAccess($todo);
+
+        $em = $this->getDoctrine()->getManager();
+
         $deleteForm = $this->createDeleteForm($todo);
 
         return $this->render('@App/todos/show.html.twig', array(
@@ -112,21 +116,29 @@ class TodosController extends Controller
      */
     public function editAction(Request $request, Todos $todo)
     {
-        // $deleteForm = $this->createDeleteForm($todo);
+        $this->checkAccess($todo);
+
+        $em = $this->getDoctrine()->getManager();
+
         $editForm = $this->createForm('AppBundle\Form\TodosType', $todo);
         $editForm->handleRequest($request);
 
+        if($request->isXmlHttpRequest() ) {
+            return $this->render('@App/todos/_edit_form.html.twig', [
+                    'todo' => $todo,
+                    'edit_form' => $editForm->createView()
+                ]);
+        }
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('todos_edit', array('id' => $todo->getId()));
+            return $this->redirectToRoute('todos_edit', ['id' => $todo->getId()]);
         }
 
-        return $this->render('@App/todos/edit.html.twig', array(
+        return $this->render('@App/todos/edit.html.twig', [
             'todo' => $todo,
             'edit_form' => $editForm->createView()
-            // 'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -136,14 +148,10 @@ class TodosController extends Controller
      */
     public function deleteAction(Request $request, Todos $todo)
     {
-        // $form = $this->createDeleteForm($todo);
-        // $form->handleRequest($request);
-
-        // if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($todo);
-            $em->flush();
-        // }
+        $this->checkAccess($todo);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($todo);
+        $em->flush();
 
         return $this->redirectToRoute('todos_index');
     }
@@ -157,6 +165,8 @@ class TodosController extends Controller
      */
     public function closeAction(Request $request, Todos $todo)
     {
+        $this->checkAccess($todo);
+
         $em = $this->getDoctrine()->getManager();
         $history = $request->getRequestUri();
         $securityContext = $this->get('security.authorization_checker');
@@ -182,5 +192,21 @@ class TodosController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    protected function checkAccess(Todos $todo)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        // get user
+        $securityContext = $this->get('security.authorization_checker');
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($this->getUser());
+
+        // check user access
+        $userTodos = $em->getRepository("AppBundle:Todos")->getUserTodosId($user->getId());
+        $userAccess = in_array($todo->getId(), $userTodos);
+        if(!$userAccess) throw $this->createNotFoundException('access denied');
+        return true;
     }
 }
