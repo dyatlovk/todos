@@ -1,0 +1,35 @@
+table {
+    table-layout: fixed;
+}
+table td,
+table th {
+    overflow: hidden;
+}
+table td > div,
+table th > div {
+    white-space: nowrap;
+}
+.col-id {
+    min-width: 50px;
+}
+.col-title {
+    width: 9%;
+}
+.col-content {
+    width: 35%;
+}
+.col-create {
+    width: 10%;
+}
+.col-modify {
+    width: 10%;
+}
+.col-sheduled {
+    width: 10%;
+}
+.col-cat {
+    width: 10%;
+}
+.col-actions {
+    width: 10%;
+}

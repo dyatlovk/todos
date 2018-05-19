@@ -11,6 +11,8 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('front', './assets/js/front.js')
     .addEntry('start', './assets/js/start.js')
+    .addEntry('todos', './assets/js/todos.js')
+    .addEntry('cats', './assets/js/cats.js')
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()

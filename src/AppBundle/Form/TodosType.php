@@ -31,6 +31,7 @@ class TodosType extends AbstractType
         $user = $this->tokenStorage->getToken()->getUser();
         $builder
         ->add('title', TextType::class, [
+            'attr' => ['class' => 'title'],
             'translation_domain' => 'forms',
             'label' => 'title'
         ])

@@ -5,6 +5,10 @@ content {
 .left {
     min-width: 300px;
     background-color: #eee;
+    position: fixed;
+    left: 0;
+    top: 40px;
+    height: 100%;
 }
 
 .left li {
@@ -24,4 +28,14 @@ content {
 
 header .uk-navbar {
     border-bottom: 1px solid #cdcdcd;
+}
+
+.uk-modal-dialog textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 200px;
+}
+
+.uk-modal-dialog .title {
+    width: 100%;
 }

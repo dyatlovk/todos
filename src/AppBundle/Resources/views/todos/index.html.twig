@@ -8,27 +8,27 @@
     <table class="uk-table uk-table-striped uk-table-condensed">
         <thead>
             <tr>
-                <th>{{ 'id' | trans }}</th>
-                <th>{{ 'title'| trans }}</th>
-                <th>{{ 'content' | trans }}</th>
-                <th>{{ 'datecreate' | trans }}</th>
-                <th>{{ 'datemodify' | trans }}</th>
-                <th>{{ 'datesheduled' | trans }}</th>
-                <th>{{ 'cat' | trans }}</th>
-                <th>{{ 'actions' | trans }}</th>
+                <th class="col-id">{{ 'id' | trans }}</th>
+                <th class="col-title">{{ 'title'| trans }}</th>
+                <th class="col-content">{{ 'content' | trans }}</th>
+                <th class="col-create">{{ 'datecreate' | trans }}</th>
+                <th class="col-modify">{{ 'datemodify' | trans }}</th>
+                <th class="col-sheduled">{{ 'datesheduled' | trans }}</th>
+                <th class="col-cat">{{ 'cat' | trans }}</th>
+                <th class="col-actions">{{ 'actions' | trans }}</th>
             </tr>
         </thead>
         <tbody>
         {% for todo in todos %}
             <tr>
-                <td><a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ todo.id }}</a></td>
-                <td>{{ todo.title }}</td>
-                <td>{{ todo.content }}</td>
-                <td>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ todo.category.title }}</td>
-                <td>
+                <td class="col-id"><a href="{{ path('todos_show', { 'id': todo.id }) }}">{{ todo.id }}</a></td>
+                <td class="col-title"><div>{{ todo.title }}</div></td>
+                <td class="col-content"><div>{{ todo.content }}</div></td>
+                <td class="col-create"><div>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</div></td>
+                <td class="col-modify"><div>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</div></td>
+                <td class="col-sheduled"><div>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</div></td>
+                <td class="col-cat"><div>{{ todo.category.title }}</div></td>
+                <td class="col-actions">
                     <div class="uk-button-group">
                         <a class="uk-button uk-button-small" href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>
                         <a class="uk-button uk-button-small" href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'edit' | trans }}</a>
@@ -45,4 +45,12 @@
             <a href="{{ path('todos_new') }}">{{ 'create a new todo' | trans }}</a>
         </li>
     </ul>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/todos.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('build/todos.js') }}"></script>
 {% endblock %}
