@@ -1,13 +1,6 @@
 FOSUserBundle:
   profile.show.username: Username
   profile.show.email: E-mail
-  profile.show.class: Class
-  profile.show.strong: Strength
-  profile.show.intelligence: Intelligence
-  profile.show.lucky: Luck
-  profile.show.mentalStrength: Mental strength
-  profile.show.dexterity: Dexterity
-  profile.show.money: Mouney
 
 #index.html.twig
 todos list: Лист заданий
@@ -22,7 +15,7 @@ cat: Категория
 actions: Действия
 
 show: Показать
-edit: Изменить
+edit: Редактировать
 delete: Удалить
 
 create a new todo: Добавить новое задание
@@ -30,3 +23,21 @@ create a new todo: Добавить новое задание
 #show.html.twig
 Todo: Задание
 Id: №
+Title: Заголовок
+Content: Содержание
+Datecreate: Дата создания
+Datemodify: Дата редактирования
+Datesheduled: Дата выполнения
+Catid: № Категории
+Status: Статус
+User: Пользователь
+Back to the list: Назад к списку
+Edit: Редактировать
+
+#edit.html.twig
+Todo edit: Изменение задания
+Back to the list: Назад к списку
+
+#new.html.twig
+Todo creation: Добавление задания
+Back to the list: Назад к списку
