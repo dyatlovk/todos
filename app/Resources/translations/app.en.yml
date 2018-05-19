@@ -2,12 +2,12 @@ FOSUserBundle:
   profile.show.username: Username
   profile.show.email: E-mail
 
-#index.html.twig
+#todos/index.html.twig
 todos list: To do list
 
 id: ID
 title: Title
-content: Content
+content: Contetn
 datecreate: Datecreate
 datemodify: Datemodify
 datesheduled: Datesheduled
@@ -17,27 +17,45 @@ actions: Actions
 show: Show
 edit: Edit
 delete: Delete
+close: Close
 
 create a new todo: Create a new to do
 
-#show.html.twig
-Todo: To do
-Id: ID
-Title: Title
-Content: Content
-Datecreate: Datecreate
-Datemodify: Datemodify
-Datesheduled: Datesheduled
-Catid: Catid
-Status: Status
-User: User
-Back to the list: Back
-Edit: Edit
+#todos/show.html.twig
+todo: To do
+catid: Catid
+status: Status
+user: User
+back to the list: Back to the list
 
-#edit.html.twig
-Todo edit: To do edit
-Back to the list: Back
+#todos/edit.html.twig
+todo edit: To do edit
 
-#new.html.twig
-Todo creation: To do creation
-Back to the list: Back
+#todos/new.html.twig
+todo creation: To do creation
+
+#start/index.html.twig
+show all: Show all
+
+#category/edit.html.twig
+category edit: Category edit
+
+#category/index.html.twig
+categories list: Categories list
+description: Description
+create a new category: Create a new category
+
+#category/new.html.twig
+category creation: Category creation
+
+#category/show.html.twig
+category: Category
+
+#base.html.twig
+welcome: Welcome!
+todo manager: To do manager
+todos: To do
+list: List
+create: Create
+categories: Categories
+logout: Logout

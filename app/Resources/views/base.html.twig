@@ -1,8 +1,10 @@
+{% trans_default_domain 'app' %}
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{'welcome' | trans }}{% endblock %}</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.5/css/uikit.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.5/css/components/form-advanced.almost-flat.css" />
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
@@ -12,23 +14,23 @@
     <body>
         <header>
             <nav class="uk-navbar">
-                <a class="uk-navbar-brand" href="/">Todo Manager</a>
+                <a class="uk-navbar-brand" href="/">{{ 'todo manager' | trans }}</a>
                 <ul class="uk-navbar-nav">
                     <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
-                        <div class="uk-navbar-content">Todos</div>
+                        <div class="uk-navbar-content">{{ 'todos' | trans }}</div>
                         <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
                             <ul class="uk-nav uk-nav-navbar">
-                                <li><a href="{{ path('todos_index') }}">List</a></li>
-                                <li><a href="{{ path('todos_new') }}">Create</a></li>
+                                <li><a href="{{ path('todos_index') }}">{{ 'list' | trans }}</a></li>
+                                <li><a href="{{ path('todos_new') }}">{{ 'create' | trans }}</a></li>
                             </ul>
                         </div>
                     </li>
                     <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
-                        <div class="uk-navbar-content">Categories</div>
+                        <div class="uk-navbar-content">{{ 'categories' | trans }}</div>
                         <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
                             <ul class="uk-nav uk-nav-navbar">
-                                <li><a href="{{ path('category_index') }}">List</a></li>
-                                <li><a href="{{ path('category_new') }}">Create</a></li>
+                                <li><a href="{{ path('category_index') }}">{{ 'list' | trans }}</a></li>
+                                <li><a href="{{ path('category_new') }}">{{ 'create' | trans }}</a></li>
                             </ul>
                         </div>
                     </li>
@@ -36,7 +38,7 @@
                 <div class="uk-navbar-content uk-navbar-flip">
                     <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
                     <a href="{{ path('fos_user_security_logout') }}">
-                        logout
+                        {{'logout' | trans }}
                     </a>
                 </div>
             </nav>

@@ -1,7 +1,9 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Category edit</h1>
+    <h1>{{'category edit' | trans }}</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form, { 'attr': {'class': 'uk-form'}}) }}
@@ -10,7 +12,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+            <a href="{{ path('category_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

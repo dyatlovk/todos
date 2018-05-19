@@ -3,44 +3,44 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'Todo' | trans }}</h1>
+    <h1>{{ 'todo' | trans }}</h1>
 
     <table>
         <tbody>
             <tr>
-                <th>{{ 'Id' | trans }}</th>
+                <th>{{ 'id' | trans }}</th>
                 <td>{{ todo.id }}</td>
             </tr>
             <tr>
-                <th>{{ 'Title' | trans }}</th>
+                <th>{{ 'title' | trans }}</th>
                 <td>{{ todo.title }}</td>
             </tr>
             <tr>
-                <th>{{ 'Content' | trans }}</th>
+                <th>{{ 'content' | trans }}</th>
                 <td>{{ todo.content }}</td>
             </tr>
             <tr>
-                <th>{{ 'Datecreate' | trans }}</th>
+                <th>{{ 'datecreate' | trans }}</th>
                 <td>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>{{ 'Datemodify' | trans }}</th>
+                <th>{{ 'datemodify' | trans }}</th>
                 <td>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>{{ 'Datesheduled' | trans }}</th>
+                <th>{{ 'datesheduled' | trans }}</th>
                 <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>{{ 'Catid' | trans }}</th>
+                <th>{{ 'catid' | trans }}</th>
                 <td>{{ todo.catId }}</td>
             </tr>
             <tr>
-                <th>{{ 'Status' | trans }}</th>
+                <th>{{ 'status' | trans }}</th>
                 <td>{{ todo.status }}</td>
             </tr>
             <tr>
-                <th>{{ 'User' | trans }}</th>
+                <th>{{ 'user' | trans }}</th>
                 <td>{{ todo.userID }}</td>
             </tr>
         </tbody>
@@ -48,10 +48,10 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_index') }}">{{ 'Back to the list' | trans }}</a>
+            <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
         <li>
-            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'Edit' | trans }}</a>
+            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'edit' | trans }}</a>
         </li>
     </ul>
 {% endblock %}

@@ -1,7 +1,9 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Category creation</h1>
+    <h1>{{ 'category creation' | trans }}</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -10,7 +12,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+            <a href="{{ path('category_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
     </ul>
 {% endblock %}
