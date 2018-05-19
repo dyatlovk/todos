@@ -1,13 +1,6 @@
 FOSUserBundle:
   profile.show.username: Username
   profile.show.email: E-mail
-  profile.show.class: Class
-  profile.show.strong: Strength
-  profile.show.intelligence: Intelligence
-  profile.show.lucky: Luck
-  profile.show.mentalStrength: Mental strength
-  profile.show.dexterity: Dexterity
-  profile.show.money: Mouney
 
 #index.html.twig
 todos list: To do list
@@ -30,3 +23,21 @@ create a new todo: Create a new to do
 #show.html.twig
 Todo: To do
 Id: ID
+Title: Title
+Content: Content
+Datecreate: Datecreate
+Datemodify: Datemodify
+Datesheduled: Datesheduled
+Catid: Catid
+Status: Status
+User: User
+Back to the list: Back
+Edit: Edit
+
+#edit.html.twig
+Todo edit: To do edit
+Back to the list: Back
+
+#new.html.twig
+Todo creation: To do creation
+Back to the list: Back

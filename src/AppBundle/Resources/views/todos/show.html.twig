@@ -12,35 +12,35 @@
                 <td>{{ todo.id }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>{{ 'Title' | trans }}</th>
                 <td>{{ todo.title }}</td>
             </tr>
             <tr>
-                <th>Content</th>
+                <th>{{ 'Content' | trans }}</th>
                 <td>{{ todo.content }}</td>
             </tr>
             <tr>
-                <th>Datecreate</th>
+                <th>{{ 'Datecreate' | trans }}</th>
                 <td>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Datemodify</th>
+                <th>{{ 'Datemodify' | trans }}</th>
                 <td>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Datesheduled</th>
+                <th>{{ 'Datesheduled' | trans }}</th>
                 <td>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Catid</th>
+                <th>{{ 'Catid' | trans }}</th>
                 <td>{{ todo.catId }}</td>
             </tr>
             <tr>
-                <th>Status</th>
+                <th>{{ 'Status' | trans }}</th>
                 <td>{{ todo.status }}</td>
             </tr>
             <tr>
-                <th>User</th>
+                <th>{{ 'User' | trans }}</th>
                 <td>{{ todo.userID }}</td>
             </tr>
         </tbody>
@@ -48,10 +48,10 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_index') }}">Back to the list</a>
+            <a href="{{ path('todos_index') }}">{{ 'Back to the list' | trans }}</a>
         </li>
         <li>
-            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">Edit</a>
+            <a href="{{ path('todos_edit', { 'id': todo.id }) }}">{{ 'Edit' | trans }}</a>
         </li>
     </ul>
 {% endblock %}
