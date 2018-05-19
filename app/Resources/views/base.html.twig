@@ -34,7 +34,7 @@
                     </li>
                 </ul>
                 <div class="uk-navbar-content uk-navbar-flip">
-                    {{ app.user.username }}
+                    <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
                     <a href="{{ path('fos_user_security_logout') }}">
                         logout
                     </a>
@@ -43,6 +43,7 @@
         </header>
         <content>
             {% block body %}{% endblock %}
+            {% block fos_user_content %}{% endblock %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.5/js/uikit.min.js"></script>
             <script src="{{ asset('build/app.js') }}"></script>
