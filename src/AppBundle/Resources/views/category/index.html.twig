@@ -1,16 +1,18 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Categories list</h1>
+    <h1>{{ 'categories list' | trans }}</h1>
 
     <table class="uk-table uk-table-striped uk-table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>{{ 'id' | trans }}</th>
+                <th>{{ 'title' | trans }}</th>
+                <th>{{ 'description' | trans }}</th>
+                <th>{{ 'status' | trans }}</th>
+                <th>{{ 'actions' | trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -23,10 +25,10 @@
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('category_show', { 'id': category.id }) }}">show</a>
+                            <a href="{{ path('category_show', { 'id': category.id }) }}">{{ 'show' | trans }}</a>
                         </li>
                         <li>
-                            <a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>
+                            <a href="{{ path('category_edit', { 'id': category.id }) }}">{{ 'edit' | trans }}</a>
                         </li>
                     </ul>
                 </td>
@@ -37,7 +39,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('category_new') }}">Create a new category</a>
+            <a href="{{ path('category_new') }}">{{'create a new category' | trans }}</a>
         </li>
     </ul>
 {% endblock %}

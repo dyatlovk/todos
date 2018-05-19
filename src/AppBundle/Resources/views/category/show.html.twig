@@ -1,24 +1,26 @@
+{% trans_default_domain 'app' %}
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Category</h1>
+    <h1>{{ 'category' | trans }}</h1>
 
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'id' | trans }}</th>
                 <td>{{ category.id }}</td>
             </tr>
             <tr>
-                <th>Title</th>
+                <th>{{ 'title' | trans }}</th>
                 <td>{{ category.title }}</td>
             </tr>
             <tr>
-                <th>Description</th>
+                <th>{{ 'description' | trans }}</th>
                 <td>{{ category.description }}</td>
             </tr>
             <tr>
-                <th>Status</th>
+                <th>{{ 'status' | trans }}</th>
                 <td>{{ category.status }}</td>
             </tr>
         </tbody>
@@ -26,14 +28,14 @@
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+            <a href="{{ path('category_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
         <li>
-            <a href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
+            <a href="{{ path('category_edit', { 'id': category.id }) }}">{{ 'edit' | trans }}</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" value="delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>

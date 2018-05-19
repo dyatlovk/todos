@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "a01b799f1d1558b142975e09f593adb9",
@@ -964,7 +964,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2018-03-30 07:19:34"
+            "time": "2018-03-30T07:19:34+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",

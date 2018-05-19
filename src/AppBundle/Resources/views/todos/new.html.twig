@@ -3,7 +3,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'Todo creation' | trans }}</h1>
+    <h1>{{ 'todo creation' | trans }}</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -12,7 +12,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_index') }}">{{ 'Back to the list' | trans }}</a>
+            <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
     </ul>
 {% endblock %}
