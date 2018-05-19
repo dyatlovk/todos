@@ -3,7 +3,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'Todo edit' | trans }}</h1>
+    <h1>{{ 'todo edit' | trans }}</h1>
 
     {{ form_start(edit_form, { 'attr': {'class': 'uk-form'} }) }}
         {{ form_widget(edit_form) }}
@@ -12,7 +12,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('todos_index') }}">{{ 'Back to the list' | trans }}</a>
+            <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
         </li>
     </ul>
 {% endblock %}

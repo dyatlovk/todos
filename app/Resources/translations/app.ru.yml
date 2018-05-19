@@ -2,12 +2,12 @@ FOSUserBundle:
   profile.show.username: Username
   profile.show.email: E-mail
 
-#index.html.twig
+#todos/index.html.twig
 todos list: Лист заданий
 
 id: №
 title: Заголовок
-content: Содержание
+content: Описание
 datecreate: Дата создания
 datemodify: Дата редактирования
 datesheduled: Дата выполнения
@@ -17,27 +17,45 @@ actions: Действия
 show: Показать
 edit: Редактировать
 delete: Удалить
+close: Закрыть
 
 create a new todo: Добавить новое задание
 
-#show.html.twig
-Todo: Задание
-Id: №
-Title: Заголовок
-Content: Содержание
-Datecreate: Дата создания
-Datemodify: Дата редактирования
-Datesheduled: Дата выполнения
-Catid: № Категории
-Status: Статус
-User: Пользователь
-Back to the list: Назад к списку
-Edit: Редактировать
+#todos/show.html.twig
+todo: Задание
+catid: № Категории
+status: Статус
+user: Пользователь
+back to the list: Назад к списку
 
-#edit.html.twig
-Todo edit: Изменение задания
-Back to the list: Назад к списку
+#todos/edit.html.twig
+todo edit: Изменение задания
 
-#new.html.twig
-Todo creation: Добавление задания
-Back to the list: Назад к списку
+#todos/new.html.twig
+todo creation: Добавление задания
+
+#todos/start/index.html.twig
+show all: Показать всё
+
+#todos/category/edit.html.twig
+category edit: Редактирование категории
+
+#category/index.html.twig
+categories list: Список категорий
+description: Описание
+create a new category: Создать новую категорию
+
+#category/new.html.twig
+category creation: Создание категории
+
+#category/show.html.twig
+category: Категория
+
+#base.html.twig
+welcome: Добро пожаловать!
+todo manager: Менеджер заданий
+todos: Задания
+list: Список
+create: Добавить
+categories: Категории
+logout: Выйти

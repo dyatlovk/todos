@@ -1,4 +1,8 @@
 title: Заголовок
+content: Описание
 dateCreate: Дата создания
 dateModify: Дата модификации
 dateSheduled: Запланировано на
+status: Состояние
+description: Описание
+category: Категория
