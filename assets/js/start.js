@@ -12,15 +12,57 @@ require('../css/start.css');
 
     $todoNS.selectors.leftmenu.addEventListener('click', onLeftMenuClick);
     new $todoNS.TodoEdit();
+    document.querySelector('#js_new_todo').addEventListener('click', function(e){
+      e.preventDefault();
+      let ajax = new $todoNS.$Ajax();
+      let url = this.getAttribute("href");
+      let modal = UIkit.modal("#js-edit-modal");
+      ajax.send({
+        url: url,
+        success: function(data) {
+          modal.dialog[0].getElementsByClassName('uk-modal-content')[0].innerHTML = data;
+          modal.dialog[0].getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
+          let form = document.forms.appbundle_todos;
+          form.getElementsByClassName('submit')[0].addEventListener('click', function(e){
+            e.preventDefault();
+            var formData = new FormData(form);
+            ajax.send({
+              url: url,
+              data:formData,
+              success: function(data) {
+                let parsedData = JSON.parse(data);
+                UIkit.modal.alert("Saved!");
+                let _parseData = new $todoNS.$TodoParse({
+                  data: parsedData.category.todos
+                });
+                _parseData.parse();
+              }
+            });
+            return false;
+          });
+          modal.on(
+            {
+              'show.uk.modal': function(){
+              },
+
+              'hide.uk.modal': function(){
+                modal.dialog[0].getElementsByClassName('uk-modal-content')[0].innerHTML = '';
+                modal.dialog[0].getElementsByClassName('uk-modal-spinner')[0].style.display = 'block';
+              }
+          });
+        }
+      })
+    });
   }
 
   function onLeftMenuClick(e) {
     let trigger = e.target;
     e.preventDefault();
     if(e.target.nodeName === "A") {
+      let url = e.target.getAttribute("href");
       let ajax = new $todo.$Ajax();
       ajax.send({
-        url: e.target.getAttribute("href"),
+        url: url,
         success: function(data) {
           let parseData = new $todoNS.$TodoParse({
             data: JSON.parse(data)
@@ -31,6 +73,7 @@ require('../css/start.css');
             allLi[i].classList.remove('uk-text-success');
           }
           trigger.classList.add("uk-text-success");
+          window.history.pushState('', '', url);
         }
       });
     }

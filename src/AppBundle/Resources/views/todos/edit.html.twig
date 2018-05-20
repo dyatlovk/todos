@@ -7,9 +7,7 @@
 
     {{ include ('@App/todos/_edit_form.html.twig') }}
 
-    <ul>
-        <li>
-            <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
-        </li>
-    </ul>
+    <div class="uk-button-group">
+        <a class="uk-button" href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
+    </div>
 {% endblock %}

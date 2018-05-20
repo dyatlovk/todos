@@ -5,14 +5,7 @@
 {% block body %}
     <h1>{{ 'todo creation' | trans }}</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+    {{ include ('@App/todos/_new_form.html.twig') }}
 
-    <ul>
-        <li>
-            <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
-        </li>
-    </ul>
+    <a href="{{ path('todos_index') }}">{{ 'back to the list' | trans }}</a>
 {% endblock %}

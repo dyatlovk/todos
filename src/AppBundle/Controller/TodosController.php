@@ -63,10 +63,25 @@ class TodosController extends Controller
         $form = $this->createForm('AppBundle\Form\TodosType', $todo);
         $form->handleRequest($request);
 
+        if($request->isXmlHttpRequest() ) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $todo->setUserID($user->getId());
+                $em->persist($todo);
+                $em->flush();
+                $this->getDoctrine()->getManager()->flush();
+                $jsonResponse = $this->serialize($todo);
+                return new Response($jsonResponse);
+            }
+            return $this->render('@App/todos/_new_form.html.twig', [
+                'todo' => $todo,
+                'form' => $form->createView()
+            ]);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $todo->setUserID($user->getId());
-            // $todo->setCatId( $form->getData()->getCategory()->getId() );
             $em->persist($todo);
             $em->flush();
 

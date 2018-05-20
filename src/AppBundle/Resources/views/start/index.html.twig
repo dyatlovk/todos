@@ -15,6 +15,7 @@
         </ul>
     </div>
     <div class="content">
+        <a id="js_new_todo" data-uk-modal="{target:'#js-edit-modal', center:true}" class="uk-button uk-button-primary" href="{{ path('todos_new') }}">{{ 'create a new todo' | trans }}</a>
         <div id="js-todos-list">
             {% for todo in todos %}
                 <div class="uk-block uk-block-default" data-id="{{ todo.id }}">
