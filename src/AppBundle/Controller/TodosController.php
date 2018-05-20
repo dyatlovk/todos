@@ -124,10 +124,14 @@ class TodosController extends Controller
         $editForm->handleRequest($request);
 
         if($request->isXmlHttpRequest() ) {
+            if( $editForm->isSubmitted() && $editForm->isValid() ) {
+                $this->getDoctrine()->getManager()->flush();
+                return new Response('ok');
+            }
             return $this->render('@App/todos/_edit_form.html.twig', [
-                    'todo' => $todo,
-                    'edit_form' => $editForm->createView()
-                ]);
+                'todo' => $todo,
+                'edit_form' => $editForm->createView()
+            ]);
         }
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();

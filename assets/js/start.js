@@ -18,26 +18,19 @@ require('../css/start.css');
     let trigger = e.target;
     e.preventDefault();
     if(e.target.nodeName === "A") {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', e.target.getAttribute("href"), true);
-      // xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      xhr.send();
-      xhr.onload = function (e) {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            let data = JSON.parse(xhr.responseText);
-            todosParse(data);
-            let allLi = trigger.closest("ul").getElementsByTagName('a');
-            for(let i=0;i<allLi.length;i++) {
-              allLi[i].classList.remove('uk-text-success');
-            }
-            trigger.classList.add("uk-text-success");
-          } else {
-            console.log(xhr.status + ': ' + xhr.statusText);
+      let ajax = new $todo.$Ajax();
+      ajax.send({
+        url: e.target.getAttribute("href"),
+        success: function(data) {
+          let _data = JSON.parse(data);
+          todosParse(_data);
+          let allLi = trigger.closest("ul").getElementsByTagName('a');
+          for(let i=0;i<allLi.length;i++) {
+            allLi[i].classList.remove('uk-text-success');
           }
+          trigger.classList.add("uk-text-success");
         }
-      };
+      });
     }
     return false;
   }
@@ -89,24 +82,25 @@ require('../css/start.css');
     let url = e.target.getAttribute("href");
     let modal = document.querySelector('#js-edit-modal');
     let m = UIkit.modal("#js-edit-modal");
-    this.ajax({
-      url:url,
+    let ajax = new $todo.$Ajax();
+    ajax.send({
+      url: url,
       success: function(data) {
         modal.getElementsByClassName('uk-modal-content')[0].innerHTML = data;
         modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
-        let form = modal.getElementsByTagName('form')[0];
+        let form = document.forms.appbundle_todos;
         form.getElementsByClassName('submit')[0].addEventListener('click', function(e){
           e.preventDefault();
-          let ajax = new $todoNS.$Ajax();
-          let serData = ajax.serialize(form);
-          console.log(String(serData));
-          ajax.send(serData);
+          var formData = new FormData(form);
+          ajax.send({
+            url: url,
+            data:formData,
+            success: function() {
+              UIkit.modal.alert("Saved!");
+            }
+          });
           return false;
-        })
-      },
-      error: function(data) {
-        modal.getElementsByClassName('uk-modal-content')[0].innerHTML = data;
-        modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
+        });
       }
     });
     m.on(
@@ -138,31 +132,6 @@ require('../css/start.css');
     console.log("delete");
   }
 
-  TodoEdit.prototype.ajax = function(opt) {
-    let $this = this;
-    let def = {
-      onSend  : function() {},
-      success : function(){},
-      error   : function() {},
-      type    : "POST"
-    }
-    let cfg = Object.assign(def, opt);
-    var xhr = new XMLHttpRequest();
-    xhr.open(cfg.type, opt.url, true);
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhr.send();
-    cfg.onSend();
-    xhr.onload = function (e) {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          cfg.success(xhr.responseText);
-        } else {
-          cfg.error(xhr.status + ': ' + xhr.statusText);
-        }
-      }
-    };
-  }
-
   function _eventProcess(e, context) {
     e.preventDefault();
     if(e.target.classList.contains('todo_edit')) context.edit(e);
@@ -181,85 +150,29 @@ require('../css/start.css');
 (function(){
   $todoNS = window['$todo'] || (window['$todo'] = {});
 
-  let $Ajax = function(params) {
+  let $Ajax = function() {
     let $this = this;
+  }
+
+  $Ajax.prototype.send = function(params) {
+    $this = this;
     let defaults = {
       onSend  : function() {},
-      success : function(){},
+      success : function() {},
       error   : function() {},
-      type    : "POST"
+      type    : "POST",
+      url     : null,
+      data    : null
     };
     $this.cfg = Object.assign(defaults, params);
-  }
-
-  $Ajax.prototype.serialize = function(form) {
-    if (!form || form.nodeName !== "FORM") {
-      return;
-    }
-    var i, j,
-      obj = {};
-    for (i = form.elements.length - 1; i >= 0; i = i - 1) {
-      if (form.elements[i].name === "") {
-        continue;
-      }
-      switch (form.elements[i].nodeName) {
-      case 'INPUT':
-        switch (form.elements[i].type) {
-        case 'text':
-        case 'hidden':
-        case 'password':
-        case 'button':
-        case 'reset':
-        case 'submit':
-          obj[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-          break;
-        case 'checkbox':
-        case 'radio':
-          if (form.elements[i].checked) {
-            obj[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-          }
-          break;
-        case 'file':
-          break;
-        }
-        break;
-      case 'TEXTAREA':
-        obj[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-        break;
-      case 'SELECT':
-        switch (form.elements[i].type) {
-        case 'select-one':
-          obj[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-          break;
-        case 'select-multiple':
-          for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
-            if (form.elements[i].options[j].selected) {
-              obj[form.elements[i].name] = encodeURIComponent(form.elements[i].options[j].value);
-            }
-          }
-          break;
-        }
-        break;
-      case 'BUTTON':
-        switch (form.elements[i].type) {
-        case 'reset':
-        case 'submit':
-        case 'button':
-          obj[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-          break;
-        }
-        break;
-      }
-    }
-    return obj;
-  }
-
-  $Ajax.prototype.send = function(url) {
-    $this = this;
     var xhr = new XMLHttpRequest();
-    xhr.open($this.cfg.type, url, true);
+    xhr.open($this.cfg.type, $this.cfg.url, true);
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhr.send();
+    if($this.cfg.data) {
+      xhr.send($this.cfg.data);
+    } else {
+      xhr.send();
+    }
     $this.cfg.onSend();
     xhr.onload = function (e) {
       if (xhr.readyState === 4) {
