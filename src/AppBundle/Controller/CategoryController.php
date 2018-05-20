@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 /**
  * Category controller.
  *
- * @Route("category")
+ * @Route("category", schemes={"https"})
  * @Security("has_role('ROLE_USER')")
  */
 class CategoryController extends Controller

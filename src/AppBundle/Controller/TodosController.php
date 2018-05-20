@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 /**
  * Todo controller.
  *
- * @Route("todos")
+ * @Route("todos", schemes={"https"})
  */
 class TodosController extends Controller
 {
