@@ -107,19 +107,24 @@ require('../css/start.css');
 
   TodoEdit.prototype.close = function(e) {
     let url = e.target.getAttribute("href");
-    this.ajax({
+    let ajax = new $todo.$Ajax();
+    ajax.send({
       url:url,
       success: function(data) {
         UIkit.modal.alert("Closed");
-      },
-      error: function(data) {
-        modal.getElementsByClassName('uk-modal-spinner')[0].style.display = 'none';
       }
     });
   }
 
-  TodoEdit.prototype.delete = function() {
-    console.log("delete");
+  TodoEdit.prototype.delete = function(e) {
+    let url = e.target.getAttribute("href");
+        let ajax = new $todo.$Ajax();
+        ajax.send({
+          url:url,
+          success: function(data) {
+            UIkit.modal.alert("Deleted");
+          }
+        });
   }
 
   function _eventProcess(e, context) {
