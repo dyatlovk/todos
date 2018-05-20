@@ -22,8 +22,10 @@ require('../css/start.css');
       ajax.send({
         url: e.target.getAttribute("href"),
         success: function(data) {
-          let _data = JSON.parse(data);
-          todosParse(_data);
+          let parseData = new $todoNS.$TodoParse({
+            data: JSON.parse(data)
+          });
+          parseData.parse();
           let allLi = trigger.closest("ul").getElementsByTagName('a');
           for(let i=0;i<allLi.length;i++) {
             allLi[i].classList.remove('uk-text-success');
@@ -33,23 +35,6 @@ require('../css/start.css');
       });
     }
     return false;
-  }
-
-  function todosParse(data)
-  {
-    let todosList = $todoNS.selectors.todolist;
-    todosList.innerHTML = "";
-    for(let i=0;i<data.length;i++) {
-      let li = document.createElement("div");
-      li.classList.add('uk-block');
-      li.classList.add('uk-block-default');
-      li.innerHTML = "<h2>" +
-      data[i].title + "</h2>"+
-      "<p>"+data[i].content+"</p>" +
-      new Date(data[i].dateSheduled.timestamp*1000) +
-      "<div class='uk-button-group'> <a class='uk-button uk-button-small uk-button-danger' href=''>delete</a> <a class='uk-button uk-button-small uk-button-primary' href=''>close</a> </div>";
-      todosList.appendChild(li);
-    }
   }
 
 }());
@@ -95,8 +80,13 @@ require('../css/start.css');
           ajax.send({
             url: url,
             data:formData,
-            success: function() {
+            success: function(data) {
+              let parsedData = JSON.parse(data);
               UIkit.modal.alert("Saved!");
+              let _parseData = new $todoNS.$TodoParse({
+                data: parsedData.category.todos
+              });
+              _parseData.parse();
             }
           });
           return false;
@@ -187,4 +177,46 @@ require('../css/start.css');
 
   $todoNS.$Ajax = $Ajax;
 
+}());
+
+
+/**
+ * TodoParse
+ * *****************************************************************************
+ */
+(function(){
+  $todoNS = window['$todo'] || (window['$todo'] = {});
+
+  let $TodoParse = function(param) {
+    let $this = this;
+    let defaults = {
+      data: null
+    };
+    $this.cfg = Object.assign(defaults, param);
+    $this.parse();
+  }
+
+  $TodoParse.prototype.parse = function() {
+    let $this = this;
+    let todosList = $todoNS.selectors.todolist;
+    todosList.innerHTML = "";
+    for(let i=0;i<$this.cfg.data.length;i++) {
+      let item = document.createElement("div");
+      item.classList.add('uk-block');
+      item.classList.add('uk-block-default');
+      item.setAttribute('data-id', $this.cfg.data[i].id);
+      item.innerHTML = "<h2>" + $this.cfg.data[i].title + "</h2>"+
+      "<p>"+$this.cfg.data[i].content+"</p>" +
+      new Date($this.cfg.data[i].dateSheduled.timestamp*1000) +
+      "<div class='uk-button-group'>" +
+      "<a class='uk-button uk-button-small uk-button-primary todo_edit' data-uk-modal=\"{target:'#js-edit-modal', center:true}\" href='/todos/"+$this.cfg.data[i].id+"/edit'>"+$todoNS.translate.action_buttons.todo_edit+"</a>" +
+      "<a class='uk-button uk-button-small todo_close' href=''>"+$todoNS.translate.action_buttons.todo_close+"</a>" +
+      "<a class='uk-button uk-button-small uk-button-danger todo_delete' href=''>"+$todoNS.translate.action_buttons.todo_delete+"</a>" +
+      "</div>";
+      todosList.appendChild(item);
+    }
+    $todoNS.selectors.leftmenu.getElementsByClassName('todos_count')
+  }
+
+  $todoNS.$TodoParse = $TodoParse;
 }());

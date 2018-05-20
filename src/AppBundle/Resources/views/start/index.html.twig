@@ -8,7 +8,7 @@
             {% for category in cats.data %}
                 <li>
                     <a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a>
-                    <div class="uk-text-right">{{cats.count[loop.index0]}}</div>
+                    <div class="uk-text-right todos_count">{{cats.count[loop.index0]}}</div>
                 </li>
             {% endfor %}
             <li><a class="uk-text-success" href="{{path('todos_index')}}">{{ 'show all' | trans }}</a></li>
@@ -17,7 +17,7 @@
     <div class="content">
         <div id="js-todos-list">
             {% for todo in todos %}
-                <div class="uk-block uk-block-default">
+                <div class="uk-block uk-block-default" data-id="{{ todo.id }}">
                     <h2>{{ todo.title }}</h2>
                     <p>{{ todo.content }}</p>
                     {{ todo.dateSheduled.date|date("Y/m/d h:m") }}
@@ -46,4 +46,15 @@
 
 {% block javascripts %}
     <script src="{{ asset('build/start.js') }}"></script>
+    <script>
+        (function(){
+            $todoNS = window['$todo'] || (window['$todo'] = {});
+            $todoNS.translate = {};
+            $todoNS.translate['action_buttons'] = {
+                'todo_edit': "{{ 'edit' | trans |escape('js') }}",
+                'todo_close': "{{ 'close' | trans |escape('js') }}",
+                'todo_delete': "{{ 'delete' | trans |escape('js') }}",
+            }
+        }());
+    </script>
 {% endblock %}

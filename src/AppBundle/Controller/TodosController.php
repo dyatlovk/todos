@@ -38,16 +38,7 @@ class TodosController extends Controller
         $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
 
         if($request->isXmlHttpRequest()) {
-            $normalizer = new ObjectNormalizer();
-            $normalizer->setCircularReferenceLimit(2);
-            $normalizer->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            });
-            $encoders = [ new JsonEncoder() ];
-            $normalizers = [ $normalizer ];
-            $serializer = new Serializer($normalizers, $encoders);
-            $jsonContent = $serializer->serialize($todos, 'json');
-
+            $jsonContent = $this->serialize($todos);
             return new Response($jsonContent);
         } else {
             return $this->render('@App/todos/index.html.twig', array(
@@ -111,7 +102,7 @@ class TodosController extends Controller
     /**
      * Displays a form to edit an existing todo entity.
      *
-     * @Route("/{id}/edit", name="todos_edit")
+     * @Route("/{id}/edit", name="todos_edit", requirements={"id": "\d+"})
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Todos $todo)
@@ -126,7 +117,8 @@ class TodosController extends Controller
         if($request->isXmlHttpRequest() ) {
             if( $editForm->isSubmitted() && $editForm->isValid() ) {
                 $this->getDoctrine()->getManager()->flush();
-                return new Response('ok');
+                $jsonResponse = $this->serialize($todo);
+                return new Response($jsonResponse);
             }
             return $this->render('@App/todos/_edit_form.html.twig', [
                 'todo' => $todo,
@@ -212,5 +204,24 @@ class TodosController extends Controller
         $userAccess = in_array($todo->getId(), $userTodos);
         if(!$userAccess) throw $this->createNotFoundException('access denied');
         return true;
+    }
+
+    /**
+     * Swrialize array to JSON
+     * @param  array $data
+     * @return json
+     */
+    protected function serialize($data)
+    {
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setCircularReferenceLimit(2);
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
+        $encoders = [ new JsonEncoder() ];
+        $normalizers = [ $normalizer ];
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($data, 'json');
+        return $jsonContent;
     }
 }
