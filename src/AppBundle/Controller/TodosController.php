@@ -64,12 +64,11 @@ class TodosController extends Controller
         $form->handleRequest($request);
 
         if($request->isXmlHttpRequest() ) {
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted()) {
                 $em = $this->getDoctrine()->getManager();
                 $todo->setUserID($user->getId());
                 $em->persist($todo);
                 $em->flush();
-                $this->getDoctrine()->getManager()->flush();
                 $jsonResponse = $this->serialize($todo);
                 return new Response($jsonResponse);
             }
