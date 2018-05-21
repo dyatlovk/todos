@@ -167,7 +167,8 @@ class CategoryController extends Controller
         ->getRepository('AppBundle:Category')
         ->findBy([
             'userID' => $user->getId(),
-            'id' => $catId
+            'id' => $catId,
+            'status' => 1
         ]);
 
         if($request->isXmlHttpRequest()) {

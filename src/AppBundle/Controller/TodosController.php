@@ -35,12 +35,15 @@ class TodosController extends Controller
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
-        $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
-
         if($request->isXmlHttpRequest()) {
+            $todos = $em->getRepository('AppBundle:Todos')->findBy([
+                'userID' => $user->getId(),
+                'status' => 1
+            ]);
             $jsonContent = $this->serialize($todos);
             return new Response($jsonContent);
         } else {
+            $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
             return $this->render('@App/todos/index.html.twig', array(
                 'todos' => $todos,
             ));
@@ -129,7 +132,8 @@ class TodosController extends Controller
         $editForm->handleRequest($request);
 
         if($request->isXmlHttpRequest() ) {
-            if( $editForm->isSubmitted() && $editForm->isValid() ) {
+            if( $editForm->isSubmitted() ) {
+                if(!$editForm->isValid()) return new JsonResponse($this->getErrorMessages($editForm));
                 $this->getDoctrine()->getManager()->flush();
                 $jsonResponse = $this->serialize($todo);
                 return new Response($jsonResponse);
@@ -185,6 +189,10 @@ class TodosController extends Controller
         $todo->setStatus(0);
         $em->persist($todo);
         $em->flush();
+        if($request->isXmlHttpRequest()) {
+            $jsonResponse = $this->serialize($todo);
+            return new Response($jsonResponse);
+        }
         return $this->redirectToRoute('homepage');
     }
 
@@ -237,5 +245,22 @@ class TodosController extends Controller
         $serializer = new Serializer($normalizers, $encoders);
         $jsonContent = $serializer->serialize($data, 'json');
         return $jsonContent;
+    }
+
+    protected function getErrorMessages(\Symfony\Component\Form\Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = $this->getErrorMessages($child);
+            }
+        }
+
+        return $errors;
     }
 }

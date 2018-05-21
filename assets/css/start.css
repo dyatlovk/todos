@@ -6,8 +6,8 @@ content {
     display: flex;
 }
 
-.content {
-    height: calc(100vh - 63px);
+.content .scrollable {
+    height: calc(100vh - 130px);
     overflow: auto;
 }
 

@@ -71,8 +71,10 @@ require('../css/start.css');
           let allLi = trigger.closest("ul").getElementsByTagName('a');
           for(let i=0;i<allLi.length;i++) {
             allLi[i].classList.remove('uk-text-success');
+            allLi[i].classList.remove('selected');
           }
           trigger.classList.add("uk-text-success");
+          trigger.classList.add("selected");
           window.history.pushState('', '', url);
         }
       });
@@ -108,6 +110,7 @@ require('../css/start.css');
 
   TodoEdit.prototype.edit = function(e) {
     let url = e.target.getAttribute("href");
+    let selectedCat = $todo.selectors.leftmenu.getElementsByClassName('selected')[0];
     let modal = document.querySelector('#js-edit-modal');
     let m = UIkit.modal("#js-edit-modal");
     let ajax = new $todo.$Ajax();
@@ -120,14 +123,15 @@ require('../css/start.css');
         form.getElementsByClassName('submit')[0].addEventListener('click', function(e){
           e.preventDefault();
           var formData = new FormData(form);
+          console.log(selectedCat);
           ajax.send({
-            url: url,
+            url: (selectedCat.classList.contains('show_all'))?selectedCat.getAttribute('href'):url,
             data:formData,
             success: function(data) {
               let parsedData = JSON.parse(data);
               UIkit.modal.alert("Saved!");
               let _parseData = new $todoNS.$TodoParse({
-                data: parsedData.category.todos
+                data: (parsedData.category)?parsedData.category.todos:parsedData
               });
               _parseData.parse();
             }
@@ -155,6 +159,11 @@ require('../css/start.css');
       url:url,
       success: function(data) {
         UIkit.modal.alert("Closed");
+        let parsedData = JSON.parse(data);
+        let _parseData = new $todoNS.$TodoParse({
+          data: (parsedData.category)?parsedData.category.todos:parsedData
+        });
+        _parseData.parse();
       }
     });
   }
@@ -258,8 +267,8 @@ require('../css/start.css');
       new Date($this.cfg.data[i].dateSheduled.timestamp*1000) +
       "<div class='uk-button-group'>" +
       "<a class='uk-button uk-button-small uk-button-primary todo_edit' data-uk-modal=\"{target:'#js-edit-modal', center:true}\" href='/todos/"+$this.cfg.data[i].id+"/edit'>"+$todoNS.translate.action_buttons.todo_edit+"</a>" +
-      "<a class='uk-button uk-button-small todo_close' href=''>"+$todoNS.translate.action_buttons.todo_close+"</a>" +
-      "<a class='uk-button uk-button-small uk-button-danger todo_delete' href=''>"+$todoNS.translate.action_buttons.todo_delete+"</a>" +
+      "<a class='uk-button uk-button-small todo_close' href='/todos/"+$this.cfg.data[i].id+"/close'>"+$todoNS.translate.action_buttons.todo_close+"</a>" +
+      "<a class='uk-button uk-button-small uk-button-danger todo_delete' href='/todos/"+$this.cfg.data[i].id+"/delete'>"+$todoNS.translate.action_buttons.todo_delete+"</a>" +
       "</div>";
       todosList.appendChild(item);
     }

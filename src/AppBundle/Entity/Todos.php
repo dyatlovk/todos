@@ -27,6 +27,12 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Length(
+     *  min = 3,
+     *  max = 255
+     * )
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $title;
 
@@ -34,6 +40,7 @@ class Todos
      * @var string
      *
      * @ORM\Column(name="content", type="string", length=255)
+     * @Assert\NotNull()
      */
     private $content;
 
@@ -41,6 +48,7 @@ class Todos
      * @var \DateTime
      *
      * @ORM\Column(name="date_create", type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreate;
 
@@ -48,6 +56,7 @@ class Todos
      * @var \DateTime
      *
      * @ORM\Column(name="date_modify", type="datetime")
+     * @Assert\DateTime()
      */
     private $dateModify;
 
@@ -55,6 +64,7 @@ class Todos
      * @var \DateTime
      *
      * @ORM\Column(name="date_sheduled", type="datetime")
+     * @Assert\DateTime()
      */
     private $dateSheduled;
 
