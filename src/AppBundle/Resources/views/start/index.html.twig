@@ -5,12 +5,14 @@
 {% block body %}
     <div class="left">
         <ul id="js-cat-menu" class="uk-list uk-list-line">
-            {% for category in cats.data %}
-                <li>
-                    <a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a>
-                    <div class="uk-text-right todos_count">{{cats.count[loop.index0]}}</div>
-                </li>
-            {% endfor %}
+            {% if cats %}
+                {% for category in cats.data %}
+                    <li>
+                        <a href="{{ path('category_show_todos', { 'id': category.id }) }}">{{ category.title }}</a>
+                        <div class="uk-text-right todos_count">{{cats.count[loop.index0]}}</div>
+                    </li>
+                {% endfor %}
+            {% endif %}
             <li><a class="uk-text-success show_all" href="{{path('todos_index')}}">{{ 'show all' | trans }}</a></li>
         </ul>
     </div>
