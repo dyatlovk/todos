@@ -34,6 +34,16 @@
                             </ul>
                         </div>
                     </li>
+                    {% if is_granted("ROLE_SUPER") %}
+                        <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                            <div class="uk-navbar-content">Users</div>
+                            <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-bottom">
+                                <ul class="uk-nav uk-nav-navbar">
+                                    <li><a href="{{ path('users_index') }}">{{ 'list' | trans }}</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    {% endif %}
                 </ul>
                 <div class="uk-navbar-content uk-navbar-flip">
                     <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
