@@ -1,0 +1,33 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-group">
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{%- block email_widget -%}
+    {%- set type = type|default('email') -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} placeholder="{{name|humanize}}" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock email_widget -%}
+
+{%- block password_widget -%}
+    {%- set type = type|default('password') -%}
+    {%- if name == 'first' -%}
+        <input type="{{ type }}" {{ block('widget_attributes') }} placeholder="Password" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- else -%}
+        <input type="{{ type }}" {{ block('widget_attributes') }} placeholder="Repeat password" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- endif -%}
+{%- endblock password_widget -%}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'password' -%}
+        block('widget_attributes')
+    {%- else -%}
+        <input type="{{ type }}" {{ block('widget_attributes') }} placeholder="{{name|humanize}}" {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {%- endif -%}
+{%- endblock form_widget_simple -%}
+
+

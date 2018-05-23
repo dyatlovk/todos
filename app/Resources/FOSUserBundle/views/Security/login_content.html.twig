@@ -16,7 +16,7 @@
 <input class="btn" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
 
 <p>
-  <a href="/register">Register user</a>
+  <a href="{{ path("fos_user_registration_register") }}">Register user</a>
 </p>
 
 {% if error %}
