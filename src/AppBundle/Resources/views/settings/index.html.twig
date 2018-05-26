@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if data %}
+        <table class="uk-table uk-table-striped uk-table-condensed">
+            <thead>
+                <th class="col-id">{{ 'id' | trans }}</th>
+                <th class="col-title">{{ 'name'| trans }}</th>
+                <th class="col-value">{{ 'value'| trans }}</th>
+                <th class="col-actions">actions</th>
+            </thead>
+            {% for item in data %}
+                <td class="col-id">{{item.id}}</td>
+                <td class="col-title">{{item.name}}</td>
+                <td class="col-value">{{item.value}}</td>
+                <td class="col-actions">
+                    <div class="uk-button-group">
+                        <a class="uk-button uk-button-small" href="{{ path('settings_edit', { 'id': item.id }) }}">{{ 'edit' | trans }}</a>
+                    </div>
+                </td>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <a class="uk-button uk-button-primary" href="{{ path('settings_new') }}">{{ 'create a new settings pair' | trans }}</a>
+{% endblock %}

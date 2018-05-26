@@ -1,0 +1,87 @@
+homepage:
+    path: /
+    schemes: https
+    controller: AppBundle:Start:index
+
+
+# Todos ########################################################################
+todos_index:
+    path: /todos/index
+    controller: AppBundle:Todos:index
+
+todos_new:
+    path: /todos/new
+    controller: AppBundle:Todos:new
+
+todos_show:
+    path: /todos/{id}
+    controller: AppBundle:Todos:show
+
+todos_edit:
+    path: /todos/{id}/edit
+    controller: AppBundle:Todos:edit
+
+todos_close:
+    path: /todos/{id}/close
+    defaults: { _controller: AppBundle:Todos:close }
+
+todos_delete:
+    path: /todos/{id}/delete
+    defaults: { _controller: AppBundle:Todos:delete }
+
+
+# Cats #########################################################################
+category_index:
+    path: /category
+    controller: AppBundle:Category:index
+    methods: [GET]
+
+category_new:
+    path: /category/new
+    controller: AppBundle:Category:new
+    methods: [GET, POST]
+
+category_show:
+    path: /category/{id}
+    controller: AppBundle:Category:show
+    methods: [GET]
+
+category_edit:
+    path: /category/{id}/edit
+    controller: AppBundle:Category:edit
+    methods: [GET, POST]
+
+category_show_todos:
+    path: /category/{id}/todos
+    controller: AppBundle:Category:todos
+    methods: [GET, POST]
+
+category_delete:
+    path: /category/{id}
+    controller: AppBundle:Category:delete
+    methods: [DELETE]
+
+
+# Users ########################################################################
+users_index:
+    path: /users
+    controller: AppBundle:Users:index
+
+user_edit:
+    path: /users/{id}/edit
+    controller: AppBundle:Users:edit
+
+
+# Settings #####################################################################
+
+settings_index:
+    path: /settings
+    defaults: { _controller: AppBundle:Settings:index }
+
+settings_new:
+    path: /settings/new
+    defaults: { _controller: AppBundle:Settings:new }
+
+settings_edit:
+    path: /settings/{id}/edit
+    defaults: { _controller: AppBundle:Settings:edit }

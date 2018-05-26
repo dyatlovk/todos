@@ -1,0 +1,17 @@
+{% trans_default_domain 'app' %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form, { 'attr': {'class': 'uk-form','enctype':'multipart/form-data'} }) }}
+        {{ form_widget(form) }}
+        <input class="uk-button uk-button-primary submit" type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('settings_index') }}">{{ 'back to the list' | trans }}</a>
+        </li>
+    </ul>
+{% endblock %}

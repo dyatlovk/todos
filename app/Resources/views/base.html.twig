@@ -44,6 +44,11 @@
                             </div>
                         </li>
                     {% endif %}
+                    <li class="uk-parent" aria-haspopup="true" aria-expanded="false">
+                        <div class="uk-navbar-content">
+                            <a href="{{ path('settings_index') }}">Settings</a>
+                        </div>
+                    </li>
                 </ul>
                 <div class="uk-navbar-content uk-navbar-flip">
                     <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
