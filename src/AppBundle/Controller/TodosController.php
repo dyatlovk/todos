@@ -133,7 +133,7 @@ class TodosController extends Controller
 
         if($request->isXmlHttpRequest() ) {
             if( $editForm->isSubmitted() ) {
-                if(!$editForm->isValid()) return new JsonResponse($this->getErrorMessages($editForm));
+                if(!$editForm->isValid()) return new JsonResponse(['error'=>$this->getErrorMessages($editForm)]);
                 $this->getDoctrine()->getManager()->flush();
                 $jsonResponse = $this->serialize($todo);
                 return new Response($jsonResponse);

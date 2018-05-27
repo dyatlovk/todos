@@ -72,6 +72,9 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="cat_id", type="integer")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("integer")
      */
     private $catId;
 
@@ -79,6 +82,13 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="status", type="smallint")
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *  min = 0,
+     *  max = 1
+     * )
      */
     private $status;
 
@@ -92,6 +102,9 @@ class Todos
      * @var int
      *
      * @ORM\Column(name="user_id", type="integer", length=3)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
      */
     private $userID;
 

@@ -36,28 +36,34 @@ class TodosType extends AbstractType
             'label' => 'title'
         ])
         ->add('content', TextareaType::class, [
+            'attr' => ['class' => 'content'],
             'translation_domain' => 'forms',
             'label' => 'content'
         ])
         ->add('dateCreate', DateTimeType::class, [
+            'attr' => ['class' => 'dateCreate'],
             'translation_domain' => 'forms',
             'label' => 'dateCreate'
         ])
         ->add('dateModify', DateTimeType::class, [
+            'attr' => ['class' => 'dateModify'],
             'translation_domain' => 'forms',
             'label' => 'dateModify'
         ])
         ->add('dateSheduled', DateTimeType::class, [
+            'attr' => ['class' => 'dateSheduled'],
             'translation_domain' => 'forms',
             'label' => 'dateSheduled'
         ])
         ->add('status', ChoiceType::class, [
+            'attr' => ['class' => 'status'],
             'choices' => [0,1],
             'expanded' => true,
             'translation_domain' => 'forms',
             'label' => 'status'
         ])
         ->add('category', EntityType::class, [
+            'attr' => ['class' => 'category'],
             'class' => 'AppBundle:Category',
             'translation_domain' => 'forms',
             'label' => 'category',

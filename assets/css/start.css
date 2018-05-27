@@ -48,3 +48,9 @@ header .uk-navbar {
 .uk-modal-dialog .title {
     width: 100%;
 }
+
+.uk-modal-dialog input.error,
+.uk-modal-dialog textarea.error,
+.uk-modal-dialog .error {
+    border: 1px solid red;
+}

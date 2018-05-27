@@ -109,8 +109,8 @@ require('../css/start.css');
   }
 
   TodoEdit.prototype.edit = function(e) {
+    let selectedCat = $todo.selectors.leftmenu.getElementsByClassName('selected')[0] || 'show_all';
     let url = e.target.getAttribute("href");
-    let selectedCat = $todo.selectors.leftmenu.getElementsByClassName('selected')[0];
     let modal = document.querySelector('#js-edit-modal');
     let m = UIkit.modal("#js-edit-modal");
     let ajax = new $todo.$Ajax();
@@ -123,17 +123,27 @@ require('../css/start.css');
         form.getElementsByClassName('submit')[0].addEventListener('click', function(e){
           e.preventDefault();
           var formData = new FormData(form);
-          console.log(selectedCat);
           ajax.send({
-            url: (selectedCat.classList.contains('show_all'))?selectedCat.getAttribute('href'):url,
+            url: (selectedCat === 'show_all') ? url:selectedCat.getAttribute('href'),
             data:formData,
             success: function(data) {
               let parsedData = JSON.parse(data);
-              UIkit.modal.alert("Saved!");
-              let _parseData = new $todoNS.$TodoParse({
-                data: (parsedData.category)?parsedData.category.todos:parsedData
-              });
-              _parseData.parse();
+              if(!parsedData.error) {
+                UIkit.modal.alert("Saved!");
+                let errors = form.getElementsByClassName('error');
+                for(let i = 0; i < errors.length;i++) {
+                  errors[i].classList.remove('error');
+                }
+                let _parseData = new $todoNS.$TodoParse({
+                  data: (parsedData.category)?parsedData.category.todos:parsedData
+                });
+                _parseData.parse();
+              } else {
+                let _parseErrors = new $todoNS.$TodoParse({
+                  data: parsedData.error
+                });
+                _parseErrors.errors(form);
+              }
             }
           });
           return false;
@@ -250,7 +260,18 @@ require('../css/start.css');
       data: null
     };
     $this.cfg = Object.assign(defaults, param);
-    $this.parse();
+  }
+
+  $TodoParse.prototype.errors = function(form) {
+    let $this = this;
+    let errors = form.getElementsByClassName('error');
+    for(let i =0;i<errors.length;i++) {
+      errors[i].classList.remove('error');
+    }
+    let errorMsg = Object.keys($this.cfg.data);
+    for(let i=0;i<errorMsg.length;i++) {
+      form.getElementsByClassName(errorMsg[i])[0].classList.add('error');
+    }
   }
 
   $TodoParse.prototype.parse = function() {
