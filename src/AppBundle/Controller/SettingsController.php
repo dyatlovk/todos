@@ -26,6 +26,11 @@ class SettingsController extends Controller
         $this->user = $tokenStorage->getToken()->getUser();
     }
 
+    /**
+     * Settings List
+     *
+     * @return [type] [description]
+     */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -36,6 +41,12 @@ class SettingsController extends Controller
         ]);
     }
 
+    /**
+     * Create new setting pair
+     *
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function newAction(Request $request)
     {
         $settings = new Settings();
@@ -57,6 +68,13 @@ class SettingsController extends Controller
         ]);
     }
 
+    /**
+     * Edit setting
+     *
+     * @param  Request  $request  [description]
+     * @param  Settings $settings [description]
+     * @return [type]             [description]
+     */
     public function editAction(Request $request, Settings $settings)
     {
         $this->checkAccess($settings);
@@ -82,6 +100,12 @@ class SettingsController extends Controller
         ]);
     }
 
+    /**
+     * Check user access
+     *
+     * @param  Settings $settings [description]
+     * @return [type]             [description]
+     */
     protected function checkAccess(Settings $settings)
     {
         $em = $this->getDoctrine()->getManager();

@@ -10,35 +10,38 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Category controller.
  *
- * @Route("category", schemes={"https"})
  * @Security("has_role('ROLE_USER')")
  */
 class CategoryController extends Controller
 {
     /**
+     * $user
+     */
+    public $user;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->user = $tokenStorage->getToken()->getUser();
+    }
+
+    /**
      * Lists all category entities.
-     *
-     * @Route("/", name="category_index")
-     * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
-
         $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()], ['title' => 'asc']);
-
         return $this->render('@App/category/index.html.twig', array(
             'categories' => $categories,
         ));
@@ -46,23 +49,16 @@ class CategoryController extends Controller
 
     /**
      * Creates a new category entity.
-     *
-     * @Route("/new", name="category_new")
-     * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $category = new Category();
         $form = $this->createForm('AppBundle\Form\CategoryType', $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $category->setUserID($user->getId());
+            $category->setUserID($this->user->getId());
             $em->persist($category);
             $em->flush();
 
@@ -77,16 +73,11 @@ class CategoryController extends Controller
 
     /**
      * Finds and displays a category entity.
-     *
-     * @Route("/{id}", name="category_show")
-     * @Method("GET")
      */
     public function showAction(Category $category)
     {
         $this->checkAccess($category);
-
         $deleteForm = $this->createDeleteForm($category);
-
         return $this->render('@App/category/show.html.twig', array(
             'category' => $category,
             'delete_form' => $deleteForm->createView(),
@@ -95,35 +86,26 @@ class CategoryController extends Controller
 
     /**
      * Displays a form to edit an existing category entity.
-     *
-     * @Route("/{id}/edit", name="category_edit")
-     * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Category $category)
     {
         $this->checkAccess($category);
-
-        // user
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('AppBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $category->setUserID($user->getId());
+            $category->setUserID($this->user->getId());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
         }
 
-        return $this->render('@App/category/edit.html.twig', array(
-            'category' => $category,
-            'edit_form' => $editForm->createView(),
+        return $this->render('@App/category/edit.html.twig', [
+            'category'    => $category,
+            'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -132,10 +114,8 @@ class CategoryController extends Controller
     public function deleteAction(Request $request, Category $category)
     {
         $this->checkAccess($category);
-
         $form = $this->createDeleteForm($category);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($category);
@@ -156,12 +136,8 @@ class CategoryController extends Controller
         $order = ($request->get('order'))?$request->get('order'):'title';
         $sort  = ($request->get('sort'))?$request->get('sort'):'asc';
 
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $em = $this->getDoctrine()->getManager();
-        $data = $this->get('todos_model')->getTodos( 1, $user->getId(), $catId,$order,$sort, 20 );
+        $data = $this->get('todos_model')->getTodos( 1, $this->user->getId(), $catId,$order,$sort, 20 );
 
         if($request->isXmlHttpRequest()) {
             $normalizer = new ObjectNormalizer();
@@ -200,14 +176,8 @@ class CategoryController extends Controller
     protected function checkAccess(Category $category)
     {
         $em = $this->getDoctrine()->getManager();
-
-        // get user
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         // check user access
-        $userCats = $em->getRepository("AppBundle:Category")->getUserCatsId($user->getId());
+        $userCats = $em->getRepository("AppBundle:Category")->getUserCatsId($this->user->getId());
         $userAccess = in_array($category->getId(), $userCats);
         if(!$userAccess) throw $this->createNotFoundException('access denied');
         return true;

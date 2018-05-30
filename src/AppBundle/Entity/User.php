@@ -23,13 +23,6 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="todo", type="integer", nullable=true)
-     */
-    private $todo;
-
-    /**
      * Get id
      *
      * @return int
@@ -40,26 +33,13 @@ class User extends BaseUser
     }
 
     /**
-     * Set todo
-     *
-     * @param integer $todo
-     *
-     * @return User
+     * Set id
+     * @param $id
      */
-    public function setTodo($todo)
+    public function setId($id)
     {
-        $this->todo = $todo;
-
+        $this->id = $id;
         return $this;
     }
 
-    /**
-     * Get todo
-     *
-     * @return int
-     */
-    public function getTodo()
-    {
-        return $this->todo;
-    }
 }

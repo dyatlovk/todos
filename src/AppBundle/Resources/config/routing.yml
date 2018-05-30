@@ -75,10 +75,14 @@ category_show_todos:
 users_index:
     path: /users
     controller: AppBundle:Users:index
+    schemes: https
 
 user_edit:
     path: /users/{id}/edit
     controller: AppBundle:Users:edit
+    schemes: https
+    requirements:
+        id: '\d+'
 
 
 # Settings #####################################################################

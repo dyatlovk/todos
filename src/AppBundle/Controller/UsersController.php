@@ -12,15 +12,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Users Controller
  *
- * @Route("/users", schemes={"https"})
  * @Security("has_role('ROLE_SUPER')")
  */
 class UsersController extends Controller
 {
     /**
-     * [indexAction description]
+     * Users list
      *
-     * @Route("/", name="users_index")
      * @param  Request $request
      */
     public function indexAction(Request $request)
@@ -35,7 +33,6 @@ class UsersController extends Controller
     /**
      * Edit user
      *
-     * @Route("/{id}/edit", name="user_edit", requirements={"id": "\d+"})
      * @param  Request $request [description]
      * @param  User   $user    [description]
      * @return [type]           [description]

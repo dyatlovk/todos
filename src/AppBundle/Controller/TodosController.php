@@ -13,11 +13,13 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Todo controller.
  *
  * @Route("todos", schemes={"https"})
+ * @Security("has_role('ROLE_USER')")
  */
 class TodosController extends Controller
 {
