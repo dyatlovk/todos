@@ -20,6 +20,7 @@ todos_show:
 todos_edit:
     path: /todos/{id}/edit
     controller: AppBundle:Todos:edit
+    methods: [GET, POST]
 
 todos_close:
     path: /todos/{id}/close
@@ -60,6 +61,14 @@ category_delete:
     path: /category/{id}
     controller: AppBundle:Category:delete
     methods: [DELETE]
+
+category_show_todos:
+    path: /category/{id}/todos
+    defaults: { _controller: AppBundle:Category:todos }
+    methods: [GET, POST]
+    requirements:
+        order: '\w+'
+        sort: '\w+'
 
 
 # Users ########################################################################

@@ -27,7 +27,7 @@
                 <td class="col-create"><div>{% if todo.dateCreate %}{{ todo.dateCreate|date('Y-m-d H:i:s') }}{% endif %}</div></td>
                 <td class="col-modify"><div>{% if todo.dateModify %}{{ todo.dateModify|date('Y-m-d H:i:s') }}{% endif %}</div></td>
                 <td class="col-sheduled"><div>{% if todo.dateSheduled %}{{ todo.dateSheduled|date('Y-m-d H:i:s') }}{% endif %}</div></td>
-                <td class="col-cat"><div>{{ todo.category.title }}</div></td>
+                <td class="col-cat"><div>{{ todo.catTitle }}</div></td>
                 <td class="col-actions">
                     <div class="uk-button-group">
                         <a class="uk-button uk-button-small" href="{{ path('todos_show', { 'id': todo.id }) }}">{{ 'show' | trans }}</a>

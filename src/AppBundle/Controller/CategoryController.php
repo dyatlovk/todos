@@ -37,7 +37,7 @@ class CategoryController extends Controller
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
-        $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()]);
+        $categories = $em->getRepository('AppBundle:Category')->findBy(['userID' => $user->getId()], ['title' => 'asc']);
 
         return $this->render('@App/category/index.html.twig', array(
             'categories' => $categories,
@@ -128,9 +128,6 @@ class CategoryController extends Controller
 
     /**
      * Deletes a category entity.
-     *
-     * @Route("/{id}", name="category_delete")
-     * @Method("DELETE")
      */
     public function deleteAction(Request $request, Category $category)
     {
@@ -150,26 +147,21 @@ class CategoryController extends Controller
 
     /**
      * Get todos by cat
-     *
-     * @Route("/{id}/todos", name="category_show_todos")
      */
     public function todosAction(Request $request, Category $category)
     {
         $this->checkAccess($category);
 
         $catId = $request->get('id');
+        $order = ($request->get('order'))?$request->get('order'):'title';
+        $sort  = ($request->get('sort'))?$request->get('sort'):'asc';
+
         $securityContext = $this->get('security.authorization_checker');
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($this->getUser());
 
         $em = $this->getDoctrine()->getManager();
-        $cats = $em
-        ->getRepository('AppBundle:Category')
-        ->findBy([
-            'userID' => $user->getId(),
-            'id' => $catId,
-            'status' => 1
-        ]);
+        $data = $this->get('todos_model')->getTodos( 1, $user->getId(), $catId,$order,$sort, 20 );
 
         if($request->isXmlHttpRequest()) {
             $normalizer = new ObjectNormalizer();
@@ -180,12 +172,12 @@ class CategoryController extends Controller
             $encoders = [ new JsonEncoder() ];
             $normalizers = [ $normalizer ];
             $serializer = new Serializer($normalizers, $encoders);
-            $jsonContent = $serializer->serialize($cats[0]->getTodos(), 'json');
+            $jsonContent = $serializer->serialize($data, 'json');
 
             return new Response($jsonContent);
         } else {
             return $this->render('@App/category/todos.html.twig',[
-                'cats' => $cats
+                'data' => $data
             ]);
         }
     }

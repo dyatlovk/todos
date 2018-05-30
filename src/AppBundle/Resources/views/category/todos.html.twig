@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for cat in cats %}
-        {% for todo in cat.todos %}
-            <h2>{{todo.title}}</h2>
-            <p>{{todo.content}}</p>
-        {% endfor %}
+    {% for item in data %}
+        <h2>{{item.title}}</h2>
+        <p>{{item.content}}</p>
     {% endfor %}
 {% endblock %}

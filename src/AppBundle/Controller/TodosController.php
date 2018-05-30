@@ -9,10 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Todo controller.
@@ -22,28 +22,32 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class TodosController extends Controller
 {
     /**
+     * $user
+     * @var [type]
+     */
+    public $user;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->user = $tokenStorage->getToken()->getUser();
+    }
+
+    /**
      * Lists all todo entities.
-     *
-     * @Route("/", name="todos_index")
-     * @Method({"GET", "POST"})
      */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         if($request->isXmlHttpRequest()) {
             $todos = $em->getRepository('AppBundle:Todos')->findBy([
-                'userID' => $user->getId(),
+                'userID' => $this->user->getId(),
                 'status' => 1
             ]);
             $jsonContent = $this->serialize($todos);
             return new Response($jsonContent);
         } else {
-            $todos = $em->getRepository('AppBundle:Todos')->findBy(['userID' => $user->getId()]);
+            $todos = $this->get('todos_model')->todosList($this->user->getId());
             return $this->render('@App/todos/index.html.twig', array(
                 'todos' => $todos,
             ));
@@ -58,10 +62,6 @@ class TodosController extends Controller
      */
     public function newAction(Request $request)
     {
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $todo = new Todos();
         $form = $this->createForm('AppBundle\Form\TodosType', $todo);
         $form->handleRequest($request);
@@ -69,7 +69,7 @@ class TodosController extends Controller
         if($request->isXmlHttpRequest() ) {
             if ($form->isSubmitted()) {
                 $em = $this->getDoctrine()->getManager();
-                $todo->setUserID($user->getId());
+                $todo->setUserID($this->user->getId());
                 $em->persist($todo);
                 $em->flush();
                 $jsonResponse = $this->serialize($todo);
@@ -83,7 +83,7 @@ class TodosController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $todo->setUserID($user->getId());
+            $todo->setUserID($this->user->getId());
             $em->persist($todo);
             $em->flush();
 
@@ -183,9 +183,6 @@ class TodosController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $history = $request->getRequestUri();
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
         $todo->setStatus(0);
         $em->persist($todo);
         $em->flush();
@@ -216,13 +213,8 @@ class TodosController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        // get user
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         // check user access
-        $userTodos = $em->getRepository("AppBundle:Todos")->getUserTodosId($user->getId());
+        $userTodos = $em->getRepository("AppBundle:Todos")->getUserTodosId($this->user->getId());
         $userAccess = in_array($todo->getId(), $userTodos);
         if(!$userAccess) throw $this->createNotFoundException('access denied');
         return true;

@@ -75,7 +75,7 @@ require('../css/start.css');
           }
           trigger.classList.add("uk-text-success");
           trigger.classList.add("selected");
-          window.history.pushState('', '', url);
+          // window.history.pushState('', '', url);
         }
       });
     }
@@ -285,7 +285,7 @@ require('../css/start.css');
       item.setAttribute('data-id', $this.cfg.data[i].id);
       item.innerHTML = "<h2>" + $this.cfg.data[i].title + "</h2>"+
       "<p>"+$this.cfg.data[i].content+"</p>" +
-      new Date($this.cfg.data[i].dateSheduled.timestamp*1000) +
+      $this.cfg.data[i].dateSheduled +
       "<div class='uk-button-group'>" +
       "<a class='uk-button uk-button-small uk-button-primary todo_edit' data-uk-modal=\"{target:'#js-edit-modal', center:true}\" href='/todos/"+$this.cfg.data[i].id+"/edit'>"+$todoNS.translate.action_buttons.todo_edit+"</a>" +
       "<a class='uk-button uk-button-small todo_close' href='/todos/"+$this.cfg.data[i].id+"/close'>"+$todoNS.translate.action_buttons.todo_close+"</a>" +

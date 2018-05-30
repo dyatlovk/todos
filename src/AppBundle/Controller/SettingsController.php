@@ -6,6 +6,7 @@ use AppBundle\Entity\Settings;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Settings Controller
@@ -14,6 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SettingsController extends Controller
 {
+    /**
+     * $user
+     * @var [type]
+     */
+    public $user;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->user = $tokenStorage->getToken()->getUser();
+    }
+
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -26,17 +38,13 @@ class SettingsController extends Controller
 
     public function newAction(Request $request)
     {
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $settings = new Settings();
         $form = $this->createForm('AppBundle\Form\SettingsType', $settings);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $settings->setUserId($user->getId());
+            $settings->setUserId($this->user->getId());
             $em->persist($settings);
             $em->flush();
 
@@ -55,11 +63,6 @@ class SettingsController extends Controller
 
         $container  = $this->container->getParameter('app');
 
-        // user
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         $form = $this->createForm('AppBundle\Form\SettingsType', $settings, [
             'container' => $container
         ]);
@@ -67,7 +70,7 @@ class SettingsController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $settings->setUserId($user->getId());
+            $settings->setUserId($this->user->getId());
             $em->persist($settings);
             $em->flush();
             return $this->redirectToRoute('settings_index');
@@ -83,13 +86,8 @@ class SettingsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        // get user
-        $securityContext = $this->get('security.authorization_checker');
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByUsername($this->getUser());
-
         // check user access
-        $userSettings = $em->getRepository("AppBundle:Settings")->getUserSettingsId($user->getId());
+        $userSettings = $em->getRepository("AppBundle:Settings")->getUserSettingsId($this->user->getId());
         $userAccess = in_array($settings->getId(), $userSettings);
         if(!$userAccess) throw $this->createNotFoundException('access denied');
         return true;

@@ -1,0 +1,5 @@
+services:
+    todos_model:
+        class: AppBundle\Models\TodosModel
+        arguments: ['@doctrine.orm.entity_manager']
+        public: true

@@ -17,5 +17,6 @@ class AppExtension extends Extension
         /*@var XmlFileLoader*/
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('params.yml');
+        $loader->load('services.yml');
     }
 }
